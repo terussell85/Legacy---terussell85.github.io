@@ -1,0 +1,15 @@
+---
+layout: post
+title: "A blog"
+date: 2013-12-07 13:00:10 -0700
+comments: true
+categories: 
+---
+
+I've never really had a good online personal presence.  I had a couple of blogs in college and high school, but most of the subject matter revolved around weird life events.  Hardly what I'd call a "professional" presence.  Now, working at [Domo](http://www.domo.com), I work with a ton of amazing people.  Most of them have pretty substantial credibility.  They inspired me to get my presence known and out there.
+
+This blog will serve as a dumping point for my day-to-day adventures, as well as fun tidbits I learn or discovery along the way.
+
+I hope you enjoy the ride.
+
+--T
