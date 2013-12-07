@@ -4,7 +4,7 @@
   <title><![CDATA[The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2013-12-07T12:58:39-07:00</updated>
+  <updated>2013-12-07T13:14:32-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -12,5 +12,20 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[A Blog]]></title>
+    <link href="http://terussell85.github.io/blog/2013/12/07/a-blog/"/>
+    <updated>2013-12-07T13:00:10-07:00</updated>
+    <id>http://terussell85.github.io/blog/2013/12/07/a-blog</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve never really had a good online personal presence.  I had a couple of blogs in college and high school, but most of the subject matter revolved around weird life events.  Hardly what I&rsquo;d call a &ldquo;professional&rdquo; presence.  Now, working at <a href="http://www.domo.com">Domo</a>, I work with a ton of amazing people.  Most of them have pretty substantial credibility.  They inspired me to get my presence known and out there.</p>
+
+<p>This blog will serve as a dumping point for my day-to-day adventures, as well as fun tidbits I learn or discovery along the way.</p>
+
+<p>I hope you enjoy the ride.</p>
+
+<p>&mdash;T</p>
+]]></content>
+  </entry>
   
 </feed>
