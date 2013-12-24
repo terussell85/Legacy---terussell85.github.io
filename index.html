@@ -9,7 +9,8 @@
   <meta name="author" content="Tyler Russell">
 
   
-  <meta name="description" content="I&rsquo;ve never really had a good online personal presence. I had a couple of blogs in college and high school, but most of the subject matter &hellip;">
+  <meta name="description" content="TLDR Try to wrap any promise work in services. Rarely should controllers do anything but consume promises.
+Expose promises as return values of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +69,477 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/12/23/the-angularjs-promise-anti-pattern-that-makes-me-cry/">The AngularJs Promise Anti-Pattern That Makes Me Cry</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-23T10:57:37-08:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>TLDR</h3>
+
+<ul>
+<li>Try to wrap any promise work in services.  Rarely should controllers do anything but consume promises.</li>
+<li>Expose promises as return values of service calls instead of forcing callbacks as parameters.  This allows for multiple callbacks. (and much simpler code)</li>
+<li>Setup callbacks as behaviors instead of global &ldquo;success&rdquo; or &ldquo;failure&rdquo;.  This allows for much easier chaining if necessary</li>
+</ul>
+
+
+<h3>The anti-pattern</h3>
+
+<p>Asynchronous interactions in AngularJs are built on promises.  A <a href="http://andyshora.com/promises-angularjs-explained-as-cartoon.html">lot</a> <a href="http://markdalgleish.com/2013/06/using-promises-in-angularjs-views/">has</a> <a href="http://johnmunsch.com/2013/07/17/angularjs-services-and-promises/">been</a> <a href="https://egghead.io/lessons/angularjs-promises">said</a> on the subject of promises already.  So I won&rsquo;t cover their purpose extensively here.  Long story short, use them.</p>
+
+<p>Sadly enough, the reasons for using promises are still widely misunderstood.  One pattern, in particular, I still see quite often with new users of promises.  I don&rsquo;t have a cool name for it, but if I did, it would be: &ldquo;The AngularJs promise anti-pattern that makes me cry.&rdquo;  But that&rsquo;s just because I&rsquo;m over-dramatic.</p>
+
+<p>In general, I&rsquo;ve seen this pattern in the following form:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">caller</span><span class="p">(){</span>
+</span><span class='line'>  <span class="nx">callee</span><span class="p">({},</span> <span class="kd">function</span><span class="p">(){},</span> <span class="kd">function</span><span class="p">(){});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">callee</span><span class="p">(</span><span class="nx">toSave</span><span class="p">,</span> <span class="nx">success</span><span class="p">,</span> <span class="nx">failure</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/place&quot;</span><span class="p">,</span> <span class="nx">toSave</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">promise</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">successData</span><span class="p">){</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="nx">success</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">success</span><span class="p">(</span><span class="nx">successData</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">failure</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">errorData</span><span class="p">){</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="nx">failure</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">failure</span><span class="p">(</span><span class="nx">errorData</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So before I start a flame war on this one, I&rsquo;ll go ahead and say nothing is &ldquo;wrong&rdquo; with this code.  In some cases I would even argue that it is perfectly acceptable.  You can see that we are trying to separate concerns, abstract callbacks, and keep things as clean as possible.  However, using promises this way eliminates many of the reasons that promises exist in the first place.  How so?  Let&rsquo;s step through a scenario.</p>
+
+<h3>Our initial code</h3>
+
+<p>Let&rsquo;s say that we are working along one day, listening to our favorite Pandora station when our project manager comes and taps us on the shoulder.  &ldquo;We need a page that saves an item and then moves on to another page.&rdquo;, he says.  No problem.  Being savvy programmers (with little time), we whip up the following controller and service in a few minutes.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Page controller</span>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;testCtrl&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">test</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/**</span>
+</span><span class='line'><span class="cm">   * Responds to click events on the save button</span>
+</span><span class='line'><span class="cm">   * Saves the items and advances to the next page if successful</span>
+</span><span class='line'><span class="cm">   */</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onSaveClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">,</span>
+</span><span class='line'>      <span class="c1">//success callback</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>        <span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//go to next page</span>
+</span><span class='line'>        <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place1&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="c1">//error callback</span>
+</span><span class='line'>      <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>        <span class="c1">//go to next page</span>
+</span><span class='line'>        <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place2&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Helper service</span>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">service</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">saveItem</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">success</span><span class="p">,</span> <span class="nx">fail</span><span class="p">){</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">promise</span> <span class="o">=</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/item&quot;</span><span class="p">,</span> <span class="nx">item</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//wrap the callback in another callback, because that&#39;s the cool way</span>
+</span><span class='line'>    <span class="nx">promise</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">itemData</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="nx">success</span><span class="p">){</span>
+</span><span class='line'>          <span class="nx">success</span><span class="p">(</span><span class="nx">itemData</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//do it a different way here.  Because two ways is always better than one!</span>
+</span><span class='line'>    <span class="nx">promise</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">fail</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">saveItem</span> <span class="o">:</span> <span class="nx">saveItem</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And voila, a page that saves an item on button click.  It works as designed.  I&rsquo;m sure quite a few readers threw up in their mouths reading that code (I almost did as I wrote it).  We could easily point out a number of issues already with the way this is designed, but that&rsquo;s not the point of this exercise.  Let&rsquo;s step through piece by piece and see why this is bad.  Plus, I&rsquo;m still surprised how often I will go back and read my own code and find designs like this.  We all have bad days.</p>
+
+<h3>Exposing the issues: Changing requirements</h3>
+
+<p>Let&rsquo;s say that our project manager comes back and decides that the requirements have changed.  &ldquo;Customers are complaining about getting lost,&rdquo; he says.  &ldquo;We need to add a second button that saves the item but stays on the same page. We need to support both buttons.&rdquo;</p>
+
+<p>Great, no problem.  We&rsquo;ll just make some minor tweaks to our controller to support this functionality.  We take a step back and look at our code.  Lets look at our plan of attack.</p>
+
+<ul>
+<li>Another event handler for &ldquo;update in place&rdquo; button clicks.</li>
+<li>both handlers call the same save code.</li>
+<li>only the first save should route to another page</li>
+<li>both error callbacks do the same thing</li>
+</ul>
+
+
+<p>So we take a first stab at it.  And after a few iterations of refactoring, come out with the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Page controller</span>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;testCtrl&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">test</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">commonUiLogic</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onSaveClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">commonUiLogic</span><span class="p">();</span>
+</span><span class='line'>      <span class="c1">//go to next page</span>
+</span><span class='line'>      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place1&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">},</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="c1">//go to next page</span>
+</span><span class='line'>      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place2&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onUpdateInPlace</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">,</span> <span class="nx">commonUiLogic</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="c1">//go to next page</span>
+</span><span class='line'>      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place2&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//service left out for brevity</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All things considered, not too bad.  We have a &ldquo;commonUiLogic&rdquo; method that updates our UI for us in both cases.  We call the same service method for saving on both updates.  We are coding masters.</p>
+
+<h3>Starting to feel the pain: Even more changing requirements</h3>
+
+<p>But then it happens, our project manager comes over and tells us the requirements have changed again.  &ldquo;Red is too powerful.  We need more blue.  We need another button that saves, turns the text blue, and then goes to the next page&rdquo;.  Oh boy.  K.  Let&rsquo;s try this out.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;testCtrl&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">test</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">commonUiLogic</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">turnTextBlue</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">textColor</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onSaveClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">commonUiLogic</span><span class="p">();</span>
+</span><span class='line'>      <span class="c1">//go to next page</span>
+</span><span class='line'>      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place1&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">},</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="c1">//go to next page</span>
+</span><span class='line'>      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place2&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onUpdateInPlace</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">,</span> <span class="nx">commonUiLogic</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="c1">//go to next page</span>
+</span><span class='line'>      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place2&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">anotherButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="nx">commonUiLogic</span><span class="p">();</span>
+</span><span class='line'>      <span class="nx">turnTextBlue</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">},</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>      <span class="c1">//go to next page</span>
+</span><span class='line'>      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place2&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//service left out for brevity</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Alright, that was a relatively simple addition.  But we are beginning to see how these callbacks can quickly get out of hand.  Every new difference can cause pretty large refactoring, and it isn&rsquo;t as easy to share common code as it should be.</p>
+
+<h3>There must be a better way</h3>
+
+<p>So let&rsquo;s take a step back.  What if we had been a bit smarter in our original design of our controller and service.  Could we have made this implementation even simpler?  For brevity&rsquo;s sake, lets just jump to the final refactor on this one.  We need three buttons, changing background colors, changing font colors, and fancy routing.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Page controller</span>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;testCtrl&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">test</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">goToPlace1</span><span class="p">(){</span>
+</span><span class='line'>    <span class="c1">//go to next page</span>
+</span><span class='line'>    <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place1&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">changeBackgroundToRed</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">changeTextToBlue</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">goToPlace2</span><span class="p">(){</span>
+</span><span class='line'>    <span class="c1">//go to next page</span>
+</span><span class='line'>    <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="s2">&quot;/place2&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onSaveClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onUpdateInPlace</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">anotherButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeTextToBlue</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Helper service</span>
+</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">service</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">saveItem</span><span class="p">(</span><span class="nx">item</span><span class="p">){</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">$http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/item&quot;</span><span class="p">,</span> <span class="nx">item</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">saveItem</span> <span class="o">:</span> <span class="nx">saveItem</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Awww.  That&rsquo;s better.  Don&rsquo;t you feel lighter and happier?</p>
+
+<p>Let&rsquo;s note the major differences in this original implementation.  First, the service now returns the promise directly, instead of wrapping it by passing in the success and failure callbacks.  We no longer have inline functions as callbacks.  In fact, we don&rsquo;t even categorize callbacks as &ldquo;success&rdquo; or &ldquo;failure.&rdquo;  Instead, they are behaviorally specified.  That way, we can chain each behavior in different combinations in order to get the deserved result per save request.  Overall, the readability of the code is greatly improved.  And with concise behavioral callbacks, unit testing will be a breeze.</p>
+
+<h3>Minor changes, big impact</h3>
+
+<p>The differences between the two implementations are subtle, and in many cases won&rsquo;t matter unless you are the third or fourth developer working in the codebase.  But in summary, some best practices around using promises include:</p>
+
+<ul>
+<li>Try to wrap any promise work in services.  Rarely should controllers do anything but consume promises.</li>
+<li>Expose promises as return values of service calls instead of forcing callbacks.  This allows for multiple callbacks.</li>
+<li>Setup callbacks as behaviors instead of global &ldquo;success&rdquo; or &ldquo;failure&rdquo;.  This allows for much easier chaining if necessary</li>
+</ul>
+
+
+<p>&mdash;T</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/12/07/a-blog/">A Blog</a></h1>
     
     
@@ -84,7 +556,7 @@
   
 
 
-<time datetime="2013-12-07T13:00:10-07:00" pubdate data-updated="true">Dec 7<span>th</span>, 2013</time>
+<time datetime="2013-12-07T12:00:10-08:00" pubdate data-updated="true">Dec 7<span>th</span>, 2013</time>
         
       </p>
     
