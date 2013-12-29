@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2013-12-26T21:11:34-08:00</updated>
+  <updated>2013-12-28T18:06:18-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[The AngularJs Promise Anti-Pattern That Makes Me Cry]]></title>
     <link href="http://terussell85.github.io/blog/2013/12/23/the-angularjs-promise-anti-pattern-that-makes-me-cry/"/>
-    <updated>2013-12-23T10:57:37-08:00</updated>
+    <updated>2013-12-23T11:57:37-07:00</updated>
     <id>http://terussell85.github.io/blog/2013/12/23/the-angularjs-promise-anti-pattern-that-makes-me-cry</id>
     <content type="html"><![CDATA[<h3>TLDR</h3>
 
@@ -292,23 +292,26 @@ $location.path("/place2")
 
 <p>  $scope.onSaveClick = function(){</p>
 
-<pre><code>test.saveItem($scope.data.item).then(changeBackgroundToRed, goToPlace2)
-                               .then(goToPlace1);
+<pre><code>test.saveItem($scope.data.item).then(changeBackgroundToRed)
+                               .then(goToPlace1)
+                               .catch(goToPlace2);
 </code></pre>
 
 <p>  }</p>
 
 <p>  $scope.onUpdateInPlace = function(){</p>
 
-<pre><code>test.saveItem($scope.data.item).then(changeBackgroundToRed, goToPlace2);
+<pre><code>test.saveItem($scope.data.item).then(changeBackgroundToRed)
+                               .catch(goToPlace2);
 </code></pre>
 
 <p>  }</p>
 
 <p>  $scope.anotherButton = function(){</p>
 
-<pre><code>test.saveItem($scope.data.item).then(changeTextToBlue, goToPlace2)
-                               .then(goToPlace1);
+<pre><code>test.saveItem($scope.data.item).then(changeTextToBlue)
+                               .then(goToPlace1)
+                               .catch(goToPlace2);
 </code></pre>
 
 <p>  }

@@ -95,7 +95,7 @@ Expose promises as return values of &hellip;">
   
 
 
-<time datetime="2013-12-23T10:57:37-08:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time>
+<time datetime="2013-12-23T11:57:37-07:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time>
         
       </p>
     
@@ -473,6 +473,9 @@ Expose promises as return values of &hellip;">
 <span class='line-number'>44</span>
 <span class='line-number'>45</span>
 <span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
 </pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Page controller</span>
 </span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;testCtrl&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">test</span><span class="p">){</span>
 </span><span class='line'>
@@ -495,17 +498,20 @@ Expose promises as return values of &hellip;">
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onSaveClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">)</span>
-</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">goToPlace2</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onUpdateInPlace</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">goToPlace2</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">anotherButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeTextToBlue</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">)</span>
-</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeTextToBlue</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">goToPlace2</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
@@ -560,7 +566,7 @@ Expose promises as return values of &hellip;">
   
 
 
-<time datetime="2013-12-23T10:57:37-08:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time>
+<time datetime="2013-12-23T11:57:37-07:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time>
       
 
 <span class="categories">

@@ -4,7 +4,7 @@
   <title><![CDATA[The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2013-12-26T21:11:34-08:00</updated>
+  <updated>2013-12-28T18:06:18-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[The AngularJs Promise Anti-Pattern That Makes Me Cry]]></title>
     <link href="http://terussell85.github.io/blog/2013/12/23/the-angularjs-promise-anti-pattern-that-makes-me-cry/"/>
-    <updated>2013-12-23T10:57:37-08:00</updated>
+    <updated>2013-12-23T11:57:37-07:00</updated>
     <id>http://terussell85.github.io/blog/2013/12/23/the-angularjs-promise-anti-pattern-that-makes-me-cry</id>
     <content type="html"><![CDATA[<h3>TLDR</h3>
 
@@ -389,6 +389,9 @@
 <span class='line-number'>44</span>
 <span class='line-number'>45</span>
 <span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
 </pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//Page controller</span>
 </span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;testCtrl&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">$location</span><span class="p">,</span> <span class="nx">test</span><span class="p">){</span>
 </span><span class='line'>
@@ -411,17 +414,20 @@
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onSaveClick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">)</span>
-</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">goToPlace2</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">onUpdateInPlace</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeBackgroundToRed</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">goToPlace2</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">anotherButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeTextToBlue</span><span class="p">,</span> <span class="nx">goToPlace2</span><span class="p">)</span>
-</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">test</span><span class="p">.</span><span class="nx">saveItem</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">item</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">changeTextToBlue</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">goToPlace1</span><span class="p">)</span>
+</span><span class='line'>                                   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">goToPlace2</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
@@ -460,7 +466,7 @@
   <entry>
     <title type="html"><![CDATA[A blog]]></title>
     <link href="http://terussell85.github.io/blog/2013/12/07/a-blog/"/>
-    <updated>2013-12-07T12:00:10-08:00</updated>
+    <updated>2013-12-07T13:00:10-07:00</updated>
     <id>http://terussell85.github.io/blog/2013/12/07/a-blog</id>
     <content type="html"><![CDATA[<p>I&rsquo;ve never really had a good online personal presence.  I had a couple of blogs in college and high school, but most of the subject matter revolved around weird life events.  Hardly what I&rsquo;d call a &ldquo;professional&rdquo; presence.  Now, working at <a href="http://www.domo.com">Domo</a>, I work with a ton of amazing people.  Most of them have pretty substantial credibility.  They inspired me to get my presence known and out there.</p>
 
