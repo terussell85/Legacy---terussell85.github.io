@@ -222,17 +222,20 @@ angular.module("app").controller("testCtrl", function($scope, $location, test){
   }
 
   $scope.onSaveClick = function(){
-    test.saveItem($scope.data.item).then(changeBackgroundToRed, goToPlace2)
-                                   .then(goToPlace1);
+    test.saveItem($scope.data.item).then(changeBackgroundToRed)
+                                   .then(goToPlace1)
+                                   .catch(goToPlace2);
   }
 
   $scope.onUpdateInPlace = function(){
-    test.saveItem($scope.data.item).then(changeBackgroundToRed, goToPlace2);
+    test.saveItem($scope.data.item).then(changeBackgroundToRed)
+                                   .catch(goToPlace2);
   }
 
   $scope.anotherButton = function(){
-    test.saveItem($scope.data.item).then(changeTextToBlue, goToPlace2)
-                                   .then(goToPlace1);
+    test.saveItem($scope.data.item).then(changeTextToBlue)
+                                   .then(goToPlace1)
+                                   .catch(goToPlace2);
   }
 }
 
