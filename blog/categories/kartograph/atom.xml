@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: kartograph | The Blog of Tyler Russell]]></title>
+  <link href="http://terussell85.github.io/blog/categories/kartograph/atom.xml" rel="self"/>
+  <link href="http://terussell85.github.io/"/>
+  <updated>2015-04-04T00:07:02-06:00</updated>
+  <id>http://terussell85.github.io/</id>
+  <author>
+    <name><![CDATA[Tyler Russell]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[An Angular2 Timezone Picker - Part 1: Becoming a Kartograph-er]]></title>
+    <link href="http://terussell85.github.io/blog/2015/04/01/building-an-angularjs-timezone-picker-part-1/"/>
+    <updated>2015-04-01T21:09:07-06:00</updated>
+    <id>http://terussell85.github.io/blog/2015/04/01/building-an-angularjs-timezone-picker-part-1</id>
+    <content type="html"><![CDATA[<h3>TLDR</h3>
+
+<p>We design an SVG map to serve as the basis of our Angular2 timezone picker.</p>
+
+<p>Using Kartograph, we generate a viable map candidate using shape file obtained from the <a href="http://efele.net/maps/tz/world/">tz_world database</a> and <a href="http://www.naturalearthdata.com">Natural Earth Data</a>.</p>
+
+<p>We optimize the map using Kartograph configurations in order to cut down size and add attribution.</p>
+
+<h3>Introduction</h3>
+
+<p>In this multi-part series, we&rsquo;ll be going through the process of building a timezone picker from scratch.  We&rsquo;ll talk through possible solutions and why we choose one route or the other.</p>
+
+<p><strong>Disclosure:</strong> I am not an Angular2 expert.  At this point, I&rsquo;m not sure anyone is.  We&rsquo;ll be learning together as we go through this process.</p>
+
+<p><strong>Disclosure 2:</strong> The first part of this series documents how to build the map for the component.  Subsequent posts will document the process of building the Angular2 code.  If you only care about Angular2, feel free to skip this and come back for the next.</p>
+
+<h3>The Goal</h3>
+
+<p>To keep this post as close to real life as possible, let assume we have no clue what we want to build (this has <em>never</em> happened to me, I promise). So let&rsquo;s just find a reliable implementation to copy.  The OSX timezone picker should work.</p>
+
+<p><img src="/images/timezone/osx_picker.jpg" title="Yup.  We are going to copy this" alt="alt text" /></p>
+
+<p>I fully acknowledge that I do not own copyrights to this picker, so we will get close to this, but not too close.  For the sake of simplicity we won&rsquo;t get into a full design spec.  But here is a short list of what we are aiming to accomplish:</p>
+
+<ul>
+<li>Map of the world continents (excluding Antartica), shaded and filled</li>
+<li>Highlight the timezone offset (not the timezone) on click</li>
+<li>Display the name of the time zone that was clicked</li>
+</ul>
+
+
+<p>Bonus items:</p>
+
+<ul>
+<li>City lookup and reverse geo-coding (if you don&rsquo;t mind a server component)</li>
+<li>Size independent</li>
+<li>As small (kb-wise) as possible</li>
+<li>As few external dependencies as possible (preferably none)</li>
+</ul>
+
+
+<p>Because this is quite the list of features, we&rsquo;ll implement it in phases.  For some of the trickier features, we&rsquo;ll hopefully be able to get by without a server.  We&rsquo;ll have to wait and see.  For phase 1, we&rsquo;ll simply allow for the selection of specific time zones.  In phase 2, we&rsquo;ll extend it to city searching by reverse-geocoding.</p>
+
+<p><strong>Note:</strong> Our first instinct might be to check if someone else has done this for us already.  Great!  A quick good search reveals a few AngularJs pickers that already do much of what we want.  Luckily for us, none are in Angular2 (yet!)  Either way, that&rsquo;s no fun!  We need to do it ourselves.  If we didn&rsquo;t write it, it&rsquo;s crap.</p>
+
+<h3>Our Custom Map</h3>
+
+<p>First things first, let&rsquo;s get a map on which we can base our picker.  Building a viable SVG map will be the primary focus of this post.  To do so, we are going to use a nice set of Python scripts called <a href="http://kartograph.org/">Kartograph</a>.</p>
+
+<p>Kartograph actually has two parts, Kartograph.py and Kartograph.js.  Kartograph.py is a Python library used to generate SVGs from GIS shape files.  Kartograph.js is a javascript library for displaying and manipulating Kartograph.py maps in the browser.  It does a great job, but in our case, we don&rsquo;t need to incur the cost of the extra library, so we won&rsquo;t use it.  So we&rsquo;ll just use Kartograph.py to generate ourselves a nice SVG.</p>
+
+<p>A valid question at this point may be &ldquo;Why incur the cost of an SVG when an image will do just fine?&rdquo;.  Great question.  We&rsquo;ll see some good reasons in the future as we implement more features, but let&rsquo;s just say that we want the ultimate flexibilty.  Our component should be able to allow the selection of time zones in any bounded geographic area, not just for a hard-coded map.  Building our component around SVGs generated by Kartograph helps ensure users will be able to generate and use their own custom maps.</p>
+
+<p>Other great reasons:</p>
+
+<ul>
+<li>Different Projections</li>
+<li>User styling</li>
+<li>Attribution</li>
+</ul>
+
+
+<p><strong>Tangent:</strong> I had a roommate in college who studied <a href="http://en.wikipedia.org/wiki/Geographic_information_system">GIS</a> and I never even realized how cool it was.  GIS deals with some interesting problems. Starting this component, I bet you didn&rsquo;t realize you&rsquo;d be learning GIS shape files, map projections, and reverse geo-coding.</p>
+
+<h3>The Map Shapes</h3>
+
+<p>If you haven&rsquo;t installed Kartograph.py.  Go ahead and <a href="http://kartograph.org/docs/kartograph.py/">do it now</a>.  You&rsquo;ll need it for this part.</p>
+
+<p>To kick things off, we&rsquo;ll need some great shape (.shp) files to serve as the base for our map.  Like usual, the open source community saves us here.  For our picker, these are the shape files we will need:</p>
+
+<ul>
+<li><a href="http://www.naturalearthdata.com/downloads/50m-physical-vectors/50m-land/">Land Outlines &ndash; Natural Earth Data</a></li>
+<li><a href="http://efele.net/maps/tz/world/">Timezone Boundaries &ndash; tz-world</a></li>
+<li><a href="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/timezones/">Timezone offsets &ndash; Natural Earth Data</a></li>
+</ul>
+
+
+<p>For phase 1, we&rsquo;ll only be using the first 2.  But if you&rsquo;re going to be around for the whole series, go ahead and download the last one as well.</p>
+
+<p>If you want a free application that can view the .shp files before we turn them into SVGs, check out <a href="http://www.qgis.org/en/site/">QGIS</a>.</p>
+
+<h3>Generating Our Map</h3>
+
+<p>Alright, now for a crash course in using Kartograph.py.  In it&rsquo;s simplest form, Kartograph runs as a command line utility that accepts a configuration JSON file and generates an output SVG.  The configuration files can include many different settings.  Read the <a href="http://kartograph.org/docs/kartograph.py/">docs</a> to see them all.  We will use a subset while generating our map.</p>
+
+<p>So let&rsquo;s take a first stab at a configuration file.</p>
+
+<p>```json
+{</p>
+
+<pre><code>"layers" : {
+    "land" : {
+        "src" : "srcs/ne_110m_land.shp"
+    },
+
+    "timezones" : {
+        "src" : "srcs/tz_world.shp"
+    }
+},
+"proj": {
+    "id": "lonlat"
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This configuration specifies that we want 2 layers.  The &ldquo;land&rdquo; layer will come from the ne_110m_land.shp files, and the &ldquo;timezones&rdquo; layer will come from tz_world.shp.  We also specify the map projection to be &ldquo;lonlat&rdquo;.</p>
+
+<p>You can think of <a href="http://en.wikipedia.org/wiki/Map_projection">map projections</a> as consistent ways of mapping the spherical latitude and longitude measurements to a 2d plane.  If that peaks your interest at all, read through the wiki page.  It&rsquo;s another interesting area of GIS.  The &ldquo;lonlat&rdquo; projection we are using is a linear interpolation algorithm that will make extracting lat/lng from our map much simpler when we implement reverse-geocoding.</p>
+
+<p>So now that we have our configuration file setup,  we run Kartograph, and get our output SVG.  Let&rsquo;s open it up and take a look.  It looks great!  We&rsquo;ve got our continent outlines overlaid by our timezone outlines.  Perfect.</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+  <img src="http://terussell85.github.io/images/timezone/step1_map.jpg">
+</div>
+
+
+<p>So I guess we&rsquo;re done!  Ship it!  Okay, not so fast.  That sure took a while to load and render in Chrome when I opened it.  What&rsquo;s going on?  Uh oh.  Finder adds some insight&hellip;</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="http://terussell85.github.io/images/timezone/step1_output.jpg" style="height: 250px">
+</div>
+
+
+<p>Ouch!  46 megs?!?  It&rsquo;s large enough the OSX won&rsquo;t even render a preview image.  That might work for my good friends down in Provo that run Google Fiber, but I&rsquo;m not so lucky.  Let&rsquo;s see what we can do to shrink it.</p>
+
+<p>Taking a quick glance at the SVG code in an editor seems to indicate that the file size is due to the shear number of points necessary to represent each time zone boundary.  In other words, our SVG is simply too complex.  We have two options, eliminate shapes or simplify the geometry.  We&rsquo;ll try both.</p>
+
+<h3>Optimizing For Size &ndash; Eliminate Shapes</h3>
+
+<p>Scouring through the Kartograph docs, I noticed that there is a <a href="http://kartograph.org/docs/kartograph.py/#filtering-map-features">&ldquo;filter&rdquo; option</a> that can be used in our configuration to conditionally include geometries.  That seems to fit the ticket.  But what do we filter on?  Let&rsquo;s fire up QGIS and take a look.  Selecting a shape in tz_world shows us the attributes.</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="http://terussell85.github.io/images/timezone/attributes.jpg" style="height: 250px">
+</div>
+
+
+<p>There isn&rsquo;t much here, but we can make it work.  It seems like a good compromise would be to filter out extremely small time zones, as the likelihood of the user being able to even click those zones on the map is minuscule.  That may be upsetting for users in those specific time zones, but remember that this is phase 1.  If we want support for all possible time zones, we can address it in phase 2.  So lets change our configuration to filter out anything less than 3 sq km.</p>
+
+<p>```json
+{</p>
+
+<pre><code>"layers" : {
+    "land" : {
+        "src" : "srcs/ne_110m_land.shp"
+    },
+
+    "timezones" : {
+        "src" : "srcs/tz_world.shp",
+        "filter" : ["AREA", "greater", 3]
+    }
+},
+"proj": {
+    "id": "lonlat"
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>The result?  29.5 megs.  That&rsquo;s a pretty good decrease, but obviously still not good enough.  Let&rsquo;s take a look at our second option, simplifying the geometry.</p>
+
+<h3>Optimizing For Size &ndash; Simplify Geometry</h3>
+
+<p>The tz_world shape file has a pretty high resolution for it&rsquo;s boundary accuracy.  We definitely don&rsquo;t need that much accuracy on a map that is likely to be render at less than 1024px wide.  If we were printing a classroom map, maybe, but not for our purposes here.  We need a way to simplify the geometry without having to modify our shape files by hand.  Luckily, Kartograph can do <a href="http://kartograph.org/docs/kartograph.py/#simplifying-map-features">just that</a>.</p>
+
+<p>By the way, put <a href="http://bost.ocks.org/mike/simplify/">Visvalingam’s algorithm</a> (how the simplification works) on the list of &ldquo;GIS things I didn&rsquo;t know existed that were created by very smart people&rdquo;.</p>
+
+<p>Let&rsquo;s add the simplify option to our shape file layers.  The ne_110m_land.shp file already has 110m resolution, so we only need basic simplification there.  The tz_world layer, however, can do for a bit more.</p>
+
+<p>```json
+{</p>
+
+<pre><code>"layers" : {
+    "land" : {
+        "src" : "srcs/ne_110m_land.shp",
+        "simplify" : 1
+    },
+
+    "timezones" : {
+        "src" : "srcs/tz_world.shp",
+        "filter" : ["AREA", "greater", 3],
+        "simplify" : 3
+    }
+},
+"proj": {
+    "id": "lonlat"
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>Now we&rsquo;re making real progress.  214 KB and the SVG still looks great.  Looks like simplification was the ticket.  However, we can still probably eek out a few more bytes.</p>
+
+<h3>Optimizing For Size &ndash; Rounding for a few more bytes</h3>
+
+<p>Examining the SVG code, you might notice that our paths are using very precise numbers for their points.  If we rounded the precision to the hundreth, we could probably shave a few more bytes without really affecting the shape of the geometry.  What&rsquo;s that?  Kartograph has the <a href="http://kartograph.org/docs/kartograph.py/#round-coordinates">round option</a>?  Let&rsquo;s plug it in.</p>
+
+<p>```json
+{</p>
+
+<pre><code>"layers" : {
+    "land" : {
+        "src" : "srcs/ne_110m_land.shp",
+        "simplify" : 1
+    },
+
+    "timezones" : {
+        "src" : "srcs/tz_world.shp",
+        "filter" : ["AREA", "greater", 3],
+        "simplify" : 3
+    }
+},
+"proj": {
+    "id": "lonlat"
+},
+"export": {
+   "round": 1
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>Perfect!  After all of our optimization, now we&rsquo;re down to a respectable 118 KB.  Much better.  But what is that monstrosity on the bottom of our map?  I&rsquo;m going to go ahead and make the assumption that if OSX doesn&rsquo;t include Antarctica on their map, we&rsquo;re safe to exclude it as well.  Now, we could just add another filter that explicitly excludes Antarctica from our SVG, but for learning sake, let&rsquo;s use bounding to do it instead.  <a href="http://kartograph.org/docs/kartograph.py/#framing-the-map">Bounds</a> allow us to specify the portion of the shape files that we actually want included in our SVG map.</p>
+
+<h3>Optimizing Bounds</h3>
+
+<p>In our case, we&rsquo;ll just be trimming off some of the southern hemisphere.  However, you could use this to isolate specific areas of the world for you own map.  And best of all, Kartograph includes metadata in the SVG that can be used to determine the lat/lng boundaries of the current map!  We&rsquo;ll be able to use this in phase 2 for simple lat/lng lookup based on mouse click location.</p>
+
+<p>```json
+{</p>
+
+<pre><code>"layers" : {
+    "land" : {
+        "src" : "srcs/ne_110m_land.shp",
+        "simplify" : 1
+    },
+
+    "timezones" : {
+        "src" : "srcs/tz_world.shp",
+        "filter" : ["AREA", "greater", 3],
+        "simplify" : 3
+    }
+},
+"proj": {
+    "id": "lonlat"
+},
+"export": {
+   "round": 1
+},
+"bounds": {
+    "mode": "bbox",
+    "data": [-180, -60, 180, 90]
+}
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>Overall, we&rsquo;re now down to 113 KB.  Gzipped, we&rsquo;re looking at 37 KB.  We&rsquo;re in JPG territory now, which is good enough for me.  We might be able to eek out a few more bytes, but we&rsquo;re probably at the point of diminishing returns.  Plus, 37KB is already so much more manageable than 46 megs.</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+  <img src="http://terussell85.github.io/images/timezone/step5_output.jpg" style="height: 250px">
+</div>
+
+
+<p>Our map looks much simpler now, and that is good.  Once we style it, we&rsquo;ll have a nice clean starting point for our component.</p>
+
+<h3>Adding Timezone Attribution</h3>
+
+<p>After all of our changes, however, we need to add one more configuration to our map before we finish.  For easy lookup, we need to know the Olson code of the timezone that the user is clicking.  Without doing a lat/lng lookup into a timezone database (we&rsquo;ll get to that in later phases), the easiest way to allow this is to add the attribute to each time zone SVG path.</p>
+
+<p>Luckily, as was observed previously, our tz_world shape file has the Olson code as an attribute on each time zone shape.  So let&rsquo;s tweak our configuration to have Kartograph maintain that attribute.</p>
+
+<p>```json
+{</p>
+
+<pre><code>"layers" : {
+    "land" : {
+        "src" : "srcs/ne_110m_land.shp",
+        "simplify" : 1
+    },
+
+    "timezones" : {
+        "src" : "srcs/tz_world.shp",
+        "filter" : ["AREA", "greater", 3],
+        "simplify" : 3,
+        "attributes": {
+            "tz_id": "TZID"
+        }
+    }
+},
+"proj": {
+    "id": "lonlat"
+},
+"export": {
+   "round": 1
+},
+"bounds": {
+    "mode": "bbox",
+    "data": [-180, -60, 180, 90]
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Whew!  We made it!  We&rsquo;ve got an SVG that can serve as the starting point for our phase 1 implementation.  With the metadata we added, it increased the size just a bit, but it still clocks in at 39Kb gzipped.  Not bad.  In the next post, we&rsquo;ll style the SVG, and get our Angular2 component up and running.</p>
+
+<p><strong>Spoiler Alert</strong> With reverse-geocoding, we won&rsquo;t actually need the tz-world layer, which turns out to be the heaviest of the layers.  We&rsquo;ll be able to cut this SVG down in phase 2.  So our SVG is likely to end up even smaller.</p>
+
+<h3>Conclusion</h3>
+
+<p>In the first part of our timezone picker series, we&rsquo;ve started the process towards our amazing Angular2 timezone picker by using Kartograph to generate an SVG map.  We optimized the size of the map by eliminating unnecessary geometry and simplifying preserved geometry.  We also added attribution to time zone for ease of timezone lookup.</p>
+
+<p>In the next entry, we&rsquo;ll style our SVG make and write the Angular2 code to wire up the behaviors we want.</p>
+
+<p>In future entries, we&rsquo;ll expand our implementation to phase 2, reverse-geocoding and city lookup.</p>
+
+<p>Thanks for reading!  Follow on Twitter for subsequent posts.</p>
+
+<p>&mdash;T</p>
+]]></content>
+  </entry>
+  
+</feed>
