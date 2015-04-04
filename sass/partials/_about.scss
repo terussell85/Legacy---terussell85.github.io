@@ -1,0 +1,26 @@
+.profile-image {
+	width: 200px;
+	height: 200px;
+    border-radius: 100px;
+
+    margin-bottom: 1em;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	background-image: url(/images/avatar.jpg);
+}
+@media only screen and (min-width: 550px) {
+	.profile-image {
+      float: none;
+    }
+}
+@media only screen and (min-width: 751px) {
+	.profile-image {
+      float: right;
+    }
+}
+//@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+//       only screen and (-o-min-device-pixel-ratio: 3/2),
+//       only screen and (min--moz-device-pixel-ratio: 1.5),
+//       only screen and (min-device-pixel-ratio: 1.5) {
+//    .profile-image { background-image: url(/images/avatar@2x.jpg); }
+//}
