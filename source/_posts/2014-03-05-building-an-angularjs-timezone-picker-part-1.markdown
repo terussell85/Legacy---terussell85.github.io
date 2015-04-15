@@ -31,7 +31,7 @@ To keep this post as close to real life as possible, let assume we have no clue 
 
 I fully acknowledge that I do not own copyrights to this picker, so we will get close to this, but not too close.  For the sake of simplicity we won't get into a full design spec.  But here is a short list of what we are aiming to accomplish:
 
-* Map of the world continents (excluding Antartica), shaded and filled
+* Map of the world continents (excluding Antarctica), shaded and filled
 * Highlight the timezone offset (not the timezone) on click
 * Display the name of the time zone that was clicked
 
