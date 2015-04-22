@@ -4,7 +4,7 @@
   <title><![CDATA[Category: kartograph | The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/blog/categories/kartograph/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2015-04-04T00:07:02-06:00</updated>
+  <updated>2015-04-21T23:55:50-06:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -43,7 +43,7 @@
 <p>I fully acknowledge that I do not own copyrights to this picker, so we will get close to this, but not too close.  For the sake of simplicity we won&rsquo;t get into a full design spec.  But here is a short list of what we are aiming to accomplish:</p>
 
 <ul>
-<li>Map of the world continents (excluding Antartica), shaded and filled</li>
+<li>Map of the world continents (excluding Antarctica), shaded and filled</li>
 <li>Highlight the timezone offset (not the timezone) on click</li>
 <li>Display the name of the time zone that was clicked</li>
 </ul>
