@@ -483,7 +483,13 @@ Our component will consist of three &hellip;">
 
 <p>The <code>events</code> property allows up to wire up listeners on our host DOM element that are automatically wired to expressions in our directives.  So let&rsquo;s tweak our TimeZone implementation to include the click event and corresponding callback.</p>
 
+<hr style="margin-bottom:20px;">
+
+
 <p><strong>&mdash;Author Injection&mdash;</strong> Ugh.  This one literally <a href="https://github.com/angular/angular/issues/1244">changed underneath me</a> as I was writing this article.  It looks like it is now <code>hostListeners</code>.  The Angular2 documentation has been updated, but the code hasn&rsquo;t been shipped yet as far as I can tell.  I&rsquo;ll update my examples once the changes ship in the alpha releases.</p>
+
+<hr style="margin-bottom:30px;">
+
 
 <p>So let&rsquo;s take out our element in the constructor, and wire up the <code>events</code> property of the <code>@Decorator</code> annotation.  We&rsquo;ll also add in a callback function on our TimeZone component to be called when the click happens.  That feels more Angular2-ish that manipulating the DOM element directly.</p>
 
@@ -541,7 +547,13 @@ Our component will consist of three &hellip;">
 
 <p>On a quasi-related side note, because of the way that Angular2 bindings work, the <code>bind</code> property is actually the same for both static property values and dynamic values from parent directives.  So no more <code>@</code> and <code>=</code> in directive definitions.  The value we get back from <code>bind</code> is the value we can use.  No more need to run $parse or $eval.  Yay!</p>
 
+<hr style="margin-bottom:20px;">
+
+
 <p><strong>&mdash;Author Injection&mdash;</strong> It looks like <code>bind</code> has also been changed in some recent Angular2 changes. It&rsquo;s new name is <code>properties</code> and has changed from an object to a list.  Again, expect an update in the future to fix the code samples once the changes are published to the alpha releases.</p>
+
+<hr style="margin-bottom:30px;">
+
 
 <p>In our TimeZone directive, let&rsquo;s add the <code>bind</code> property.</p>
 
@@ -658,7 +670,15 @@ Our component will consist of three &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
+
+
+<hr style="margin-bottom:20px;">
+
+
 <p><strong>&mdash;Author Injection&mdash;</strong> And&hellip; <code>PropertySetter</code> syntax has been changed as well.  I&rsquo;ll update the code soon.</p>
+
+<hr style="margin-bottom:30px;">
+
 
 <p>With the <code>PropertySetter</code> now configured, we should be able to see the <code>active</code> class get toggled on our SVG timezone path whenever we click on a timezone.</p>
 
