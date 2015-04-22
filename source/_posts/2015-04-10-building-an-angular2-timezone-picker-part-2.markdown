@@ -248,7 +248,9 @@ As we get started down this path, however, it quickly becomes apparent that this
 
 The `events` property allows up to wire up listeners on our host DOM element that are automatically wired to expressions in our directives.  So let's tweak our TimeZone implementation to include the click event and corresponding callback.
 
+<hr style="margin-bottom:20px;">
 <strong>--Author Injection--</strong> Ugh.  This one literally [changed underneath me](https://github.com/angular/angular/issues/1244) as I was writing this article.  It looks like it is now `hostListeners`.  The Angular2 documentation has been updated, but the code hasn't been shipped yet as far as I can tell.  I'll update my examples once the changes ship in the alpha releases.
+<hr style="margin-bottom:30px;">
 
 So let's take out our element in the constructor, and wire up the `events` property of the `@Decorator` annotation.  We'll also add in a callback function on our TimeZone component to be called when the click happens.  That feels more Angular2-ish that manipulating the DOM element directly.
 
@@ -285,7 +287,9 @@ Now we're in business.  Our time zone is responding to clicks.  But we still don
 
 On a quasi-related side note, because of the way that Angular2 bindings work, the `bind` property is actually the same for both static property values and dynamic values from parent directives.  So no more `@` and `=` in directive definitions.  The value we get back from `bind` is the value we can use.  No more need to run $parse or $eval.  Yay!
 
+<hr style="margin-bottom:20px;">
 <strong>--Author Injection--</strong> It looks like `bind` has also been changed in some recent Angular2 changes. It's new name is `properties` and has changed from an object to a list.  Again, expect an update in the future to fix the code samples once the changes are published to the alpha releases.
+<hr style="margin-bottom:30px;">
 
 In our TimeZone directive, let's add the `bind` property.
 
@@ -351,7 +355,9 @@ export class TimeZone{
 }
 ```
 
+<hr style="margin-bottom:20px;">
 <strong>--Author Injection--</strong> And... `PropertySetter` syntax has been changed as well.  I'll update the code soon.
+<hr style="margin-bottom:30px;">
 
 With the `PropertySetter` now configured, we should be able to see the `active` class get toggled on our SVG timezone path whenever we click on a timezone.
 
