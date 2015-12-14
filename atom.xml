@@ -4,7 +4,7 @@
   <title><![CDATA[The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2015-12-14T00:10:32-07:00</updated>
+  <updated>2015-12-14T14:17:57-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[An Ng2 Timezone Picker - Part 2.2: Scaffolding]]></title>
+    <link href="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/"/>
+    <updated>2015-12-14T13:02:12-07:00</updated>
+    <id>http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding</id>
+    <content type="html"><![CDATA[<p>In this post, we&rsquo;ll get the scaffolding of our project setup.</p>
+
+<p>Our timezone picker will consist of four different components/directives.</p>
+
+<ol>
+<li>App &ndash; the entry point into our Angular2 application</li>
+<li>TimeZonePicker &ndash; the root component for our time zone picker</li>
+<li>TimeZoneMap &ndash; the component that renders our SVG map</li>
+<li>TimeZone &ndash; the directive that maps SVG elements to classes with attributes</li>
+</ol>
+
+
+<p>By default, our project structure from the seed project looks like so:</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+  <img src="http://terussell85.github.io/images/timezone2-2/project_base.png">
+</div>
+
+
+<p>Let&rsquo;s add a bit of scaffolding and some placholder files so that we can flesh out our components in the future.</p>
+
+<ol>
+<li>Create the <code>src/components/timezone</code> directory</li>
+<li>Create the <code>src/components/timezonemap</code> directory</li>
+<li>Create the <code>src/components/timezonepicker</code> directory</li>
+<li>Create the <code>src/assets</code> directory</li>
+<li>In <code>src/components/timezone</code>, create <code>timezone.ts</code></li>
+<li>In <code>src/components/timezonemap</code>, create <code>timezonemap.ts</code></li>
+<li>In <code>src/components/timezonepicker</code>, create <code>timezonepicker.ts</code></li>
+<li>In <code>src/assets</code>, create <code>styles.css</code></li>
+<li>In <code>src/assets</code>, copy in the output map from our Kartograph.py script</li>
+</ol>
+
+
+<p>In case you need them, here are the commands for steps 1-8.  Step 9 you&rsquo;ll still need to do by hand.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir src/app/components/timezone
+</span><span class='line'>mkdir src/app/components/timezonemap
+</span><span class='line'>mkdir src/app/components/timezonepicker
+</span><span class='line'>mkdir src/assets
+</span><span class='line'>touch src/app/components/timezone/timezone.ts
+</span><span class='line'>touch src/app/components/timezonemap/timezonemap.ts
+</span><span class='line'>touch src/app/components/timezonepicker/timezonepicker.ts
+</span><span class='line'>touch src/assets/styles.css
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once setup, our project structure should look like this:</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="http://terussell85.github.io/images/timezone2-2/project_with_files.png">
+</div>
+
+
+<p>In the next part of our series, we will start to write our Angular2 components.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[An Ng2 Timezone Picker - Part 2.1: The Environment]]></title>
@@ -90,6 +161,7 @@
 
 <ol>
 <li><a href="http://terussell85.github.io/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/">Setting Up Our Ng2 Environment</a></li>
+<li><a href="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/">Project Scaffolding</a></li>
 </ol>
 
 ]]></content>

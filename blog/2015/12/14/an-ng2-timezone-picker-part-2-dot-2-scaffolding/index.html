@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>An Angular2 Timezone Picker - Part 2: Exploring the World (of ng2) - The Blog of Tyler Russell</title>
+  <title>An Ng2 Timezone Picker - Part 2.2: Scaffolding - The Blog of Tyler Russell</title>
   <meta name="author" content="Tyler Russell">
 
   
-  <meta name="description" content="Important Notice: This article was originally posted on April 21, 2015. However, it quickly became irrelevant with major core changes to the Angular2 &hellip;">
+  <meta name="description" content="In this post, we&rsquo;ll get the scaffolding of our project setup. Our timezone picker will consist of four different components/directives. App & &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2">
+  <link rel="canonical" href="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding">
   <link href="/favicon.ico" rel="icon">
   
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -85,7 +85,7 @@
   
   <header>
     
-      <h1 class="entry-title">An Angular2 Timezone Picker - Part 2: Exploring the World (of Ng2)</h1>
+      <h1 class="entry-title">An Ng2 Timezone Picker - Part 2.2: Scaffolding</h1>
     
     
       <p class="meta">
@@ -101,30 +101,76 @@
   
 
 
-<time datetime="2015-04-21T23:22:28-06:00" pubdate data-updated="true">Apr 21<span>st</span>, 2015</time>
+<time datetime="2015-12-14T13:02:12-07:00" pubdate data-updated="true">Dec 14<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>Important Notice:</h3>
+<div class="entry-content"><p>In this post, we&rsquo;ll get the scaffolding of our project setup.</p>
 
-<p>This article was originally posted on April 21, 2015.  However, it quickly became irrelevant with major core changes to the Angular2 framework.</p>
-
-<p>Now that the Angular2 codebase has calmed significantly, this article has been rewritten to reflect the current state of things.</p>
-
-<h4>Posts for the time-deprived</h4>
-
-<p>In the process of rewriting this blog post, I decided to try a new blogging style.  Instead of my standard lengthy multi-page posts, I&rsquo;m going to try and write smaller bite-sized posts that are easier to consume in small chunks.  In that spirit, you can find each of the subparts of this post listed below.</p>
-
-<p>Subparts will be added to this list as they are written.</p>
+<p>Our timezone picker will consist of four different components/directives.</p>
 
 <ol>
-<li><a href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/">Setting Up Our Ng2 Environment</a></li>
-<li><a href="/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/">Project Scaffolding</a></li>
+<li>App &ndash; the entry point into our Angular2 application</li>
+<li>TimeZonePicker &ndash; the root component for our time zone picker</li>
+<li>TimeZoneMap &ndash; the component that renders our SVG map</li>
+<li>TimeZone &ndash; the directive that maps SVG elements to classes with attributes</li>
 </ol>
 
+
+<p>By default, our project structure from the seed project looks like so:</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+  <img src="/images/timezone2-2/project_base.png">
+</div>
+
+
+<p>Let&rsquo;s add a bit of scaffolding and some placholder files so that we can flesh out our components in the future.</p>
+
+<ol>
+<li>Create the <code>src/components/timezone</code> directory</li>
+<li>Create the <code>src/components/timezonemap</code> directory</li>
+<li>Create the <code>src/components/timezonepicker</code> directory</li>
+<li>Create the <code>src/assets</code> directory</li>
+<li>In <code>src/components/timezone</code>, create <code>timezone.ts</code></li>
+<li>In <code>src/components/timezonemap</code>, create <code>timezonemap.ts</code></li>
+<li>In <code>src/components/timezonepicker</code>, create <code>timezonepicker.ts</code></li>
+<li>In <code>src/assets</code>, create <code>styles.css</code></li>
+<li>In <code>src/assets</code>, copy in the output map from our Kartograph.py script</li>
+</ol>
+
+
+<p>In case you need them, here are the commands for steps 1-8.  Step 9 you&rsquo;ll still need to do by hand.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir src/app/components/timezone
+</span><span class='line'>mkdir src/app/components/timezonemap
+</span><span class='line'>mkdir src/app/components/timezonepicker
+</span><span class='line'>mkdir src/assets
+</span><span class='line'>touch src/app/components/timezone/timezone.ts
+</span><span class='line'>touch src/app/components/timezonemap/timezonemap.ts
+</span><span class='line'>touch src/app/components/timezonepicker/timezonepicker.ts
+</span><span class='line'>touch src/assets/styles.css
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once setup, our project structure should look like this:</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="/images/timezone2-2/project_with_files.png">
+</div>
+
+
+<p>In the next part of our series, we will start to write our Angular2 components.</p>
 </div>
 
 
@@ -147,21 +193,15 @@
   
 
 
-<time datetime="2015-04-21T23:22:28-06:00" pubdate data-updated="true">Apr 21<span>st</span>, 2015</time>
+<time datetime="2015-12-14T13:02:12-07:00" pubdate data-updated="true">Dec 14<span>th</span>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/angular2/'>angular2</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/" data-via="te_russ" data-counturl="http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/" data-via="te_russ" data-counturl="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -174,10 +214,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/04/01/building-an-angularjs-timezone-picker-part-1/" title="Previous Post: An Angular2 Timezone Picker - Part 1: Becoming a Kartograph-er">&laquo; An Angular2 Timezone Picker - Part 1: Becoming a Kartograph-er</a>
+        <a class="basic-alignment left" href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/" title="Previous Post: An Ng2 Timezone Picker - Part 2.1: The Environment">&laquo; An Ng2 Timezone Picker - Part 2.1: The Environment</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/" title="next Post: An Ng2 Timezone Picker - Part 2.1: The Environment">An Ng2 Timezone Picker - Part 2.1: The Environment &raquo;</a>
       
     </p>
   </footer>
@@ -233,8 +271,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/';
-        var disqus_url = 'http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/';
+        var disqus_identifier = 'http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/';
+        var disqus_url = 'http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/';
         var disqus_script = 'embed.js';
       
     (function () {
