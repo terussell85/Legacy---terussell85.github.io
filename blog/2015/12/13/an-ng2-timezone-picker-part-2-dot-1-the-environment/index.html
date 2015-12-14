@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>An Angular2 Timezone Picker - Part 2: Exploring the World (of ng2) - The Blog of Tyler Russell</title>
+  <title>An Ng2 Timezone Picker - Part 2.1: The Environment - The Blog of Tyler Russell</title>
   <meta name="author" content="Tyler Russell">
 
   
-  <meta name="description" content="Important Notice: This article was originally posted on April 21, 2015. However, it quickly became irrelevant with major core changes to the Angular2 &hellip;">
+  <meta name="description" content="First things first, we are going to get our Angular2 project environment setup. Feel free to use your favorite IDE or text editor for this series. I& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2">
+  <link rel="canonical" href="http://terussell85.github.io/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment">
   <link href="/favicon.ico" rel="icon">
   
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -85,7 +85,7 @@
   
   <header>
     
-      <h1 class="entry-title">An Angular2 Timezone Picker - Part 2: Exploring the World (of Ng2)</h1>
+      <h1 class="entry-title">An Ng2 Timezone Picker - Part 2.1: The Environment</h1>
     
     
       <p class="meta">
@@ -101,29 +101,63 @@
   
 
 
-<time datetime="2015-04-21T23:22:28-06:00" pubdate data-updated="true">Apr 21<span>st</span>, 2015</time>
+<time datetime="2015-12-13T23:25:18-07:00" pubdate data-updated="true">Dec 13<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>Important Notice:</h3>
+<div class="entry-content"><p>First things first, we are going to get our Angular2 project environment setup.  Feel free to use your favorite IDE or text editor for this series.  I&rsquo;ll be using Webstorm because I&rsquo;m a fake developer that doesn&rsquo;t understand VIM key bindings.</p>
 
-<p>This article was originally posted on April 21, 2015.  However, it quickly became irrelevant with major core changes to the Angular2 framework.</p>
+<p>The starting point for our our timezone picker is going to be the <a href="https://github.com/angular/angular2-seed">angular2-seed</a> project found in the official angular repository.  I&rsquo;m a big fan of reusing what&rsquo;s there.  Plus, this saves us from rewriting a bunch of boilerplate.</p>
 
-<p>Now that the Angular2 codebase has calmed significantly, this article has been rewritten to reflect the current state of things.</p>
+<h4>Getting the seed setup</h4>
 
-<h4>Posts for the time-deprived</h4>
+<p>Once you have node.js installed, just clone the <a href="https://github.com/angular/angular2-seed">angular2-seed</a> repository and run <code>npm install</code> to get setup.  If needed, use the steps below.</p>
 
-<p>In the process of rewriting this blog post, I decided to try a new blogging style.  Instead of my standard lengthy multi-page posts, I&rsquo;m going to try and write smaller bite-sized posts that are easier to consume in small chunks.  In that spirit, you can find each of the subparts of this post listed below.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#go to your source dir</span>
+</span><span class='line'><span class="nb">cd</span> /my_cool_source_dir
+</span><span class='line'>
+</span><span class='line'><span class="c">#clone the seed project</span>
+</span><span class='line'>git clone https://github.com/angular/angular2-seed ng2timezonepicker
+</span><span class='line'>
+</span><span class='line'><span class="c">#go into the seed directory</span>
+</span><span class='line'><span class="nb">cd </span>ng2timezonepicker
+</span><span class='line'>
+</span><span class='line'><span class="c">#install dependencies</span>
+</span><span class='line'>npm install
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Subparts will be added to this list as they are written.</p>
+
+<p>The angular2-seed project provides us with a good starting point for our timezonepicker.  It comes preconfigured with the following technologies:</p>
 
 <ol>
-<li><a href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/">Setting Up Our Ng2 Environment</a></li>
+<li><a href="https://angular.io/">Angular2</a> for building awesome web stuff</li>
+<li><a href="https://webpack.github.io/">Webpack</a> for module bundling</li>
+<li><a href="http://www.typescriptlang.org/">TypeScript compiler</a> for typed Javascript (and more)</li>
+<li>Associated Node packages</li>
 </ol>
 
+
+<p>If you aren&rsquo;t familiar with Webpack or Typescript, don&rsquo;t fret too much.  A deep knowledge of Webpack will not be needed for this series.  However, it&rsquo;s becoming quite prevelant in the JS community, so you should probably dedicate some time to it in the future.</p>
+
+<p>If you&rsquo;ve never used TypeScript before, you&rsquo;re not alone.  We won&rsquo;t use most of the language features in this series.  And the ones we do, I&rsquo;ll try and explain.  However, if you see something that looks unfamiliar, go ahead and head over to the <a href="http://www.typescriptlang.org/">TypeScript</a> site to see what&rsquo;s up.</p>
+
+<h4>Running the project</h4>
+
+<p>The <code>package.json</code> file also has the <code>npm start</code> command configured to run the <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server</a> on port 8080.  So once you&rsquo;ve got everything setup, run <code>npm start</code> and open your browser to localhost:8080.  We&rsquo;re ready to get coding!</p>
 </div>
 
 
@@ -146,21 +180,15 @@
   
 
 
-<time datetime="2015-04-21T23:22:28-06:00" pubdate data-updated="true">Apr 21<span>st</span>, 2015</time>
+<time datetime="2015-12-13T23:25:18-07:00" pubdate data-updated="true">Dec 13<span>th</span>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/angular2/'>angular2</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/" data-via="te_russ" data-counturl="http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://terussell85.github.io/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/" data-via="te_russ" data-counturl="http://terussell85.github.io/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -173,10 +201,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/04/01/building-an-angularjs-timezone-picker-part-1/" title="Previous Post: An Angular2 Timezone Picker - Part 1: Becoming a Kartograph-er">&laquo; An Angular2 Timezone Picker - Part 1: Becoming a Kartograph-er</a>
+        <a class="basic-alignment left" href="/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/" title="Previous Post: An Angular2 Timezone Picker - Part 2: Exploring the World (of ng2)">&laquo; An Angular2 Timezone Picker - Part 2: Exploring the World (of ng2)</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/" title="next Post: An Ng2 Timezone Picker - Part 2.1: The Environment">An Ng2 Timezone Picker - Part 2.1: The Environment &raquo;</a>
       
     </p>
   </footer>
@@ -232,8 +258,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/';
-        var disqus_url = 'http://terussell85.github.io/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/';
+        var disqus_identifier = 'http://terussell85.github.io/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/';
+        var disqus_url = 'http://terussell85.github.io/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/';
         var disqus_script = 'embed.js';
       
     (function () {

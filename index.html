@@ -9,8 +9,7 @@
   <meta name="author" content="Tyler Russell">
 
   
-  <meta name="description" content="TLDR In part 2 of our series, we will use the map generated in part 1 as the beginning of our Angular2 component.
-Our component will consist of three &hellip;">
+  <meta name="description" content="First things first, we are going to get our Angular2 project environment setup. Feel free to use your favorite IDE or text editor for this series. I& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,6 +88,91 @@ Our component will consist of three &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/">An Ng2 Timezone Picker - Part 2.1: The Environment</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-13T23:25:18-07:00" pubdate data-updated="true">Dec 13<span>th</span>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>First things first, we are going to get our Angular2 project environment setup.  Feel free to use your favorite IDE or text editor for this series.  I&rsquo;ll be using Webstorm because I&rsquo;m a fake developer that doesn&rsquo;t understand VIM key bindings.</p>
+
+<p>The starting point for our our timezone picker is going to be the <a href="https://github.com/angular/angular2-seed">angular2-seed</a> project found in the official angular repository.  I&rsquo;m a big fan of reusing what&rsquo;s there.  Plus, this saves us from rewriting a bunch of boilerplate.</p>
+
+<h4>Getting the seed setup</h4>
+
+<p>Once you have node.js installed, just clone the <a href="https://github.com/angular/angular2-seed">angular2-seed</a> repository and run <code>npm install</code> to get setup.  If needed, use the steps below.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#go to your source dir</span>
+</span><span class='line'><span class="nb">cd</span> /my_cool_source_dir
+</span><span class='line'>
+</span><span class='line'><span class="c">#clone the seed project</span>
+</span><span class='line'>git clone https://github.com/angular/angular2-seed ng2timezonepicker
+</span><span class='line'>
+</span><span class='line'><span class="c">#go into the seed directory</span>
+</span><span class='line'><span class="nb">cd </span>ng2timezonepicker
+</span><span class='line'>
+</span><span class='line'><span class="c">#install dependencies</span>
+</span><span class='line'>npm install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The angular2-seed project provides us with a good starting point for our timezonepicker.  It comes preconfigured with the following technologies:</p>
+
+<ol>
+<li><a href="https://angular.io/">Angular2</a> for building awesome web stuff</li>
+<li><a href="https://webpack.github.io/">Webpack</a> for module bundling</li>
+<li><a href="http://www.typescriptlang.org/">TypeScript compiler</a> for typed Javascript (and more)</li>
+<li>Associated Node packages</li>
+</ol>
+
+
+<p>If you aren&rsquo;t familiar with Webpack or Typescript, don&rsquo;t fret too much.  A deep knowledge of Webpack will not be needed for this series.  However, it&rsquo;s becoming quite prevelant in the JS community, so you should probably dedicate some time to it in the future.</p>
+
+<p>If you&rsquo;ve never used TypeScript before, you&rsquo;re not alone.  We won&rsquo;t use most of the language features in this series.  And the ones we do, I&rsquo;ll try and explain.  However, if you see something that looks unfamiliar, go ahead and head over to the <a href="http://www.typescriptlang.org/">TypeScript</a> site to see what&rsquo;s up.</p>
+
+<h4>Running the project</h4>
+
+<p>The <code>package.json</code> file also has the <code>npm start</code> command configured to run the <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server</a> on port 8080.  So once you&rsquo;ve got everything setup, run <code>npm start</code> and open your browser to localhost:8080.  We&rsquo;re ready to get coding!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/04/21/building-an-angular2-timezone-picker-part-2/">An Angular2 Timezone Picker - Part 2: Exploring the World (of Ng2)</a></h1>
     
     
@@ -112,680 +196,22 @@ Our component will consist of three &hellip;">
   </header>
 
 
-  <div class="entry-content"><h3>TLDR</h3>
+  <div class="entry-content"><h3>Important Notice:</h3>
+
+<p>This article was originally posted on April 21, 2015.  However, it quickly became irrelevant with major core changes to the Angular2 framework.</p>
+
+<p>Now that the Angular2 codebase has calmed significantly, this article has been rewritten to reflect the current state of things.</p>
+
+<h4>Posts for the time-deprived</h4>
+
+<p>In the process of rewriting this blog post, I decided to try a new blogging style.  Instead of my standard lengthy multi-page posts, I&rsquo;m going to try and write smaller bite-sized posts that are easier to consume in small chunks.  In that spirit, you can find each of the subparts of this post listed below.</p>
+
+<p>Subparts will be added to this list as they are written.</p>
 
 <ol>
-<li>In part 2 of our series, we will use the map generated in part 1 as the beginning of our Angular2 component.</li>
-<li>Our component will consist of three directives that interact together, the TimeZone, TimeZoneMap, and TimeZonePicker.</li>
-<li>We will use <code>@Template</code> and <code>@Decorator</code> to build the first of our three components, the TimeZone.</li>
-<li>We will use <code>PropertySetter</code> to toggle classes on elements not injected into our directive.</li>
+<li><a href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/">Setting Up Our Ng2 Environment</a></li>
 </ol>
 
-
-<h3>Getting Started</h3>
-
-<p>Welcome back!  Glad to see I didn&rsquo;t scare you off already.</p>
-
-<p>In part 1 of our series, we used Kartograph to build and optimize an SVG map from open source .shp files.  Now that we&rsquo;re in part 2 of our series, congratulations, you&rsquo;re finally going to see some JavaScript.</p>
-
-<p>Well&hellip; kind of.  We&rsquo;re going to be using TypeScript with ES6 structure and modules.  Love it or hate it, it&rsquo;s going to be the defacto way to write Angular2.  No, it&rsquo;s not required.  But I&rsquo;d wager that most tutorials and documentation will be written that way.</p>
-
-<p>If you&rsquo;ve never seen ES6 or TypScript code, take a look <a href="http://www.typescriptlang.org/Tutorial">here</a> and <a href="https://github.com/lukehoban/es6features">here</a>.  That will give you a brief introduction.  We&rsquo;ll be using a small subset of the syntax here, so don&rsquo;t fret if you feel overwhelmed.</p>
-
-<p>We&rsquo;ll use the <a href="https://github.com/swirlycheetah/generator-angular2">Angular2 Yeoman generator</a> as a starting point for our project.  I personally liked the generator better than the &ldquo;Getting Started&rdquo; on <a href="http://www.angular.io">angular.io</a>, but that is not to say that it is perfect.  Once the generator was run, I made a few small tweaks to the file organization, just for my own sake.  In case you are wondering, my beginning file structure looked like the image below.</p>
-
-<div style="text-align:center; margin-bottom:20px;">
-    <img src="/images/timezone/structure.jpg" style="max-height:300px">
-</div>
-
-
-<p>Since I updated the file structure, I also had to update a few of the generated files to reflect the changes.  You can see those changes in the code blocks below.</p>
-
-<p>index.html</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!doctype html&gt;</span>
-</span><span class='line'><span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content=</span><span class="s">&quot;IE=edge&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;title&gt;</span>My Timezone Picker<span class="nt">&lt;/title&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;body&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;my</span><span class="na">-app</span><span class="nt">&gt;</span>Loading...<span class="err">&lt;</span>/my-app&gt;
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/system.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/zone.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;script&gt;</span>
-</span><span class='line'>      <span class="nx">System</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-</span><span class='line'>        <span class="nx">baseURL</span><span class="o">:</span> <span class="s1">&#39;lib/&#39;</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="s1">&#39;angular2/*&#39;</span><span class="o">:</span> <span class="s1">&#39;angular2.js&#39;</span><span class="p">,</span>
-</span><span class='line'>          <span class="s1">&#39;rx/dist/rx.all&#39;</span><span class="o">:</span> <span class="s1">&#39;rx.all.js&#39;</span><span class="p">,</span>
-</span><span class='line'>
-</span><span class='line'>          <span class="c1">//updated to point to the newly created components directory</span>
-</span><span class='line'>          <span class="s1">&#39;components/*&#39;</span> <span class="o">:</span> <span class="s2">&quot;../components/*.js&quot;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">//import the self-bootstrapping main component</span>
-</span><span class='line'>      <span class="nx">System</span><span class="p">.</span><span class="kr">import</span><span class="p">(</span><span class="s1">&#39;components/app/main&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nt">&lt;/script&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>/src/components/app/main.js</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">Decorator</span><span class="p">,</span> <span class="nx">Template</span><span class="p">,</span> <span class="nx">bootstrap</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">TimeZonePicker</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;components/timezonepicker/timezonepicker&#39;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Annotation section</span>
-</span><span class='line'><span class="err">@</span><span class="nx">Component</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;my-app&#39;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="err">@</span><span class="nx">Template</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">inline</span><span class="o">:</span> <span class="s1">&#39;Testing&#39;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="c1">// Component controller</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">Main</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span> <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//boostrap the component</span>
-</span><span class='line'><span class="nx">bootstrap</span><span class="p">(</span><span class="nx">Main</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>A Quick Note on Angular2</h3>
-
-<p>Before we get too far into the weeds, I need to get something out in open&hellip;  I&rsquo;m still an Angular2 n00b.  <em>Whew</em>.  I&rsquo;m glad we got that out of the way.  Otherwise this might have gotten really awkward later on.</p>
-
-<p>Instead of thinking of this an authoritative source regarding how to write Angular2, this of it as a documented learning experience.  It is more of a play-by-play of my own personal adventures as I began learning Angular2 (and continue to learn it).   In future posts, you&rsquo;ll notice me trying a couple of different ways to see which works best.  Despite what most blog posts would have you believe, we make mistakes as we program.  So if you&rsquo;re still learning Angular2, we&rsquo;ll be learning together. If you&rsquo;re an expert, feel free to comment and let me know how to improve.  Feedback is welcome and highly encouraged.</p>
-
-<p>Also, as to be expected of a framework in alpha stages, Angular2 is still the wild wild west of coding. Expect to read source code, design documents, and pull requests as you try to figure things out.  And expect that things are likely to change in the future.  In fact, since beginning this post, a <a href="https://github.com/angular/angular/issues/1244">few</a> <a href="https://github.com/angular/angular/issues/973">open</a> <a href="https://github.com/angular/angular/issues/1239">issues</a> have already changed some fundamental parts of how to write Angular2 directives.  I will try and update once the changes have been made public in the alpha releases.</p>
-
-<p>Even with all those caveats, writing Angular2 code is a lot of fun.  It feels like a combination of the best parts of a lot of different frameworks. I hope you will find that you learn something from my misadventures.  I will attempt to explain some of the speed bumps I&rsquo;ve run into, and some of the lessons that I have learned thus far.  If you feel like my explanation are lacking, and you need more information, <a href="https://github.com/timjacobi/angular2-education">this curated list</a> is probably a good starting point for information on Angular2.</p>
-
-<h3>The Architecture</h3>
-
-<p>Because of it&rsquo;s complexity, we already know that our time zone picker is going to consist of a number of different Angular2 directives working together.</p>
-
-<p>There is one major constraint that we need to keep in mind as we plan our architecture so that we don&rsquo;t code ourselves into a corner. We need to remember that <em>our map is a generated SVG</em>.  This turns out to be very important as we consider how to write our code.  We want to be able to use our map in it&rsquo;s generated form without modifying the SVG code.  This will allow us to regenerate maps with different bounds, timezones, etc without requiring tweaks by hand, or writing some sort of post-processor.</p>
-
-<p>In more specific terms, it means that our Angular2 components need to work with the existing SVG structure of the map.  In traditional directive development, we would be defining the templates.  With our picker, that is almost reversed.  The template is defined, and we are writing directives to assign behavior.  You could do the same thing with AngularJs (v1.x), but it actually feels even slicker doing it in Angular2.  You&rsquo;ll see what I mean as we dig deeper.</p>
-
-<p>Alright, so with that constraint in mind, we know that we will need at least 3 directives:</p>
-
-<ol>
-<li>The Time Zone Picker &ndash; this will serve as the container component.  It will provide some behavior, but mostly styling and a wrapper template</li>
-<li>The Time Zone Map &ndash; this is the component that will represent our map.  It will coordinate the state across all time zones.</li>
-<li>The Time Zone &ndash; this component will serve to assign click behaviors to a time zone in our map.</li>
-</ol>
-
-
-<p>Let&rsquo;s start by creating stubs for each of these directives.</p>
-
-<p>/src/components/timezonepicker.js</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">Template</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">TimeZoneMap</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;components/timezonepicker/timezonemap&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">Component</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s2">&quot;timezone-picker&quot;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="err">@</span><span class="nx">Template</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">inline</span><span class="o">:</span> <span class="s2">&quot;&lt;timezone-map&gt;&lt;/timezone-map&gt;&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">directives</span><span class="o">:</span> <span class="p">[</span><span class="nx">TimeZoneMap</span><span class="p">]</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZonePicker</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;TimeZonePicker constructed&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>/src/components/timezonemap.js</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">Template</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">TimeZone</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;components/timezonepicker/timezone&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">Component</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s2">&quot;timezone-map&quot;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="err">@</span><span class="nx">Template</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;components/timezonepicker/timezonemap.svg&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">directives</span><span class="o">:</span> <span class="p">[</span><span class="nx">TimeZone</span><span class="p">]</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZoneMap</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">(){</span>
-</span><span class='line'>       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;TimeZoneMap constructed&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>/src/components/timezone.js</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Decorator</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">PropertySetter</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/src/core/annotations/di&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">Decorator</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-tz-id]&#39;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZone</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;TimeZone constructed&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Pause!</h3>
-
-<p>If you&rsquo;re new to Angular2, those stubs already contain an awful amount of new information.  Here is a crash course:</p>
-
-<h5>&ldquo;import {item} from &lsquo;location&rsquo;</h5>
-
-<p>This is ES6 module syntax for loading dependencies.  Pretty sweet huh?  With ES6, we finally get a proper module syntax baked into the language itself.  The other side of this is the <code>export</code> syntax, which allows us to declare what items are exposed to consumers of our modules.  If you want more information, do a quick Google search for &ldquo;ES6 modules&rdquo;.  Or read about the different aspects of the syntax <a href="http://www.2ality.com/2014/09/es6-modules-final.html">here</a>.  Lot&rsquo;s has been written already, so I won&rsquo;t bother duplicating it.</p>
-
-<h5>@Component, @Template, @Decorator</h5>
-
-<p>These fancy things are called &ldquo;annotations&rdquo;.  They&rsquo;ve been a pivotal part of other languages for a while, and a few JavaScript libraries as well.  Angular2 uses annotations extensively.  Think of them as neat ways to establish metadata.  Annotations are becoming more commonplace in client-side frameworks, so I wouldn&rsquo;t be surprised to see widespread use in JavaScript in the near future.</p>
-
-<p>That being said, annotations are not part of the ES6 spec, and still rely on transpilers to convert them into functional browser code.  But for all you <a href="https://babeljs.io/">babel.js</a> (and equivalent) users out there, don&rsquo;t worry, people are already working on getting the Angular2 annotations supported.</p>
-
-<h5>@Component vs @Decorator</h5>
-
-<p>There are <a href="https://github.com/angular/angular/blob/master/modules/angular2/docs/core/02_directives.md">three types of directives in Angular2</a>, Decorator, Component, and Viewport.  In short, decorators are useful for encapsulating behavior, components are useful for encapsulating behavior and visual state.</p>
-
-<h5>Classes and constructor()</h5>
-
-<p>ES6 provides the <code>class</code> keyword as some nice syntax sugar for OO-style programming in JavaScript.  Constructor functions are part of that syntax sugar.  It is called any time an instance of this class is created.</p>
-
-<p>If you want more information about the class syntax, <a href="http://www.2ality.com/2015/02/es6-classes-final.html">here</a>, <a href="http://www.2ality.com/2013/07/defending-constructors.html">here</a> and <a href="http://www.frontendjournal.com/javascript-es6-learn-important-features-in-a-few-minutes/">here</a> are great starting points.  Otherwise, a few Google searches will get you a ton of information.</p>
-
-<p>Most of the other items in the stub code should be pretty self-explanatory.  The properties of the annotations provide configuration for Angular2 to build and find the components we are creating.</p>
-
-<p>You&rsquo;ll also notice that we use the selector &ldquo;[data-tz-id]&rdquo; in our TimeZone <code>@Decorator</code> annotation.  When we generated our map, we designated that the timezone id should be added to each time zone SVG path with that attribute.  That makes it really easy to create a directive instance for each time zone.</p>
-
-<h3>Back to the show</h3>
-
-<p>Now that we have our stubs, let&rsquo;s make sure it all works.  In <code>/src/components/app/main.js</code> let&rsquo;s change our app component to include a TimeZonePicker in its template.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">//change the template from this</span>
-</span><span class='line'><span class="err">@</span><span class="nx">Template</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">inline</span><span class="o">:</span> <span class="s1">&#39;Testing&#39;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//to this</span>
-</span><span class='line'><span class="err">@</span><span class="nx">Template</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">inline</span><span class="o">:</span> <span class="s1">&#39;&lt;timezone-picker&gt;&lt;/timezone-picker&gt;&#39;</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And let&rsquo;s fire up our component using <code>gulp dev</code>.</p>
-
-<div style="text-align:center; margin-bottom:20px;">
-    <img src="/images/timezone/timezonestub_output.jpg" style="max-height: 250px">
-</div>
-
-
-<p>We see that each of the components is being instantiated!  Perfect.  Let&rsquo;s start fleshing them out.</p>
-
-<h3>Make the Time Zones Clickable</h3>
-
-<p>Let&rsquo;s start to add some behavior.  We know that we want the user to be able to click on a time zone and have it be selected.  So let&rsquo;s start there.  In Angular 1.x, we&rsquo;d add an ng-click with a callback.  In standard Angular2, we&rsquo;d probably add something like <code>(click)="doSomething()"</code> to our template.  But remember how we don&rsquo;t want to change the SVG to add properties?  So how in the world can we assign click behavior to the time zone?</p>
-
-<p>Maybe we could inject the current element and add a click listener by hand, that calls a function in the TimeZone.  That is actually very possible in Angular2.   This is actually the way that the Angular2 team does it in a few cases.  If you look at the code for the <a href="https://github.com/angular/angular/blob/master/modules/angular2/src/directives/class.js"><code>class</code> directive</a>, you&rsquo;ll see that you can inject the element in your class constructor.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Decorator</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">PropertySetter</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/src/core/annotations/di&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">Decorator</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-tz-id]&#39;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZone</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">(</span><span class="nx">ngEl</span><span class="o">:</span> <span class="nx">NgElement</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;TimeZone constructed&quot;</span><span class="p">);</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">_domEl</span> <span class="o">=</span> <span class="nx">ngEl</span><span class="p">.</span><span class="nx">domElement</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">onTimeZoneClick</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;time zone was clicked!&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As we get started down this path, however, it quickly becomes apparent that this isn&rsquo;t the way we want to go.  It&rsquo;s nice to know this is available, but there must be a simpler way than just adding behavior directly to the DOM element.  Luckily, there it.  If we go back to the documentation for the <a href="https://github.com/angular/angular/blob/master/modules/angular2/docs/core/02_directives.md#decorators"><code>@Decorator</code> directive type</a>, we&rsquo;ll notice a property called <code>events</code>.</p>
-
-<p>The <code>events</code> property allows up to wire up listeners on our host DOM element that are automatically wired to expressions in our directives.  So let&rsquo;s tweak our TimeZone implementation to include the click event and corresponding callback.</p>
-
-<hr style="margin-bottom:20px;">
-
-
-<p><strong>&mdash;Author Injection&mdash;</strong> Ugh.  This one literally <a href="https://github.com/angular/angular/issues/1244">changed underneath me</a> as I was writing this article.  It looks like it is now <code>hostListeners</code>.  The Angular2 documentation has been updated, but the code hasn&rsquo;t been shipped yet as far as I can tell.  I&rsquo;ll update my examples once the changes ship in the alpha releases.</p>
-
-<hr style="margin-bottom:30px;">
-
-
-<p>So let&rsquo;s take out our element in the constructor, and wire up the <code>events</code> property of the <code>@Decorator</code> annotation.  We&rsquo;ll also add in a callback function on our TimeZone component to be called when the click happens.  That feels more Angular2-ish that manipulating the DOM element directly.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Decorator</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">PropertySetter</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/src/core/annotations/di&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">Decorator</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-tz-id]&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">events</span><span class="o">:</span> <span class="p">{</span> <span class="nx">click</span><span class="o">:</span> <span class="s1">&#39;onTimeZoneClick()&#39;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZone</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;TimeZone constructed&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">onTimeZoneClick</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;time zone was clicked!&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Alright, now let&rsquo;s fire up our picker and take a look.  Hmm.  As we click around, you might notice that nothing is happening.  What the heck?  Why isn&rsquo;t it working?  Ah yes, a quick Google search reminds us that <a href="http://stackoverflow.com/questions/11701461/attach-events-to-svg-paths">SVG paths with no fill are not clickable</a>.  I can&rsquo;t tell you how many times I&rsquo;ve had to re-learn that lesson.  We don&rsquo;t have a proper place to add the fill style yet, so let&rsquo;s just make a quick tweak to <code>index.html</code> to add a style tag with the necessary CSS.  We&rsquo;ll come back to styling a few times later.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;style </span><span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">path</span><span class="o">[</span><span class="nt">data-tz-id</span><span class="o">]</span><span class="p">{</span>
-</span><span class='line'>    <span class="n">fill</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="nt">&lt;/style&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we&rsquo;re in business.  Our time zone is responding to clicks.  But we still don&rsquo;t know which id corresponds to the time zone shape being clicked.  That information is available in the <code>data-tz-id</code> attribute on the DOM element, but not in our Decorator.  Let&rsquo;s head to the <a href="https://github.com/angular/angular/blob/master/modules/angular2/docs/core/02_directives.md#decorators">documentation</a> one more time.  It looks like directives can specify a <code>bind</code> property to get attributes from the DOM elements.  That sounds like it might fit the bill, so let&rsquo;s give it a try.</p>
-
-<p>On a quasi-related side note, because of the way that Angular2 bindings work, the <code>bind</code> property is actually the same for both static property values and dynamic values from parent directives.  So no more <code>@</code> and <code>=</code> in directive definitions.  The value we get back from <code>bind</code> is the value we can use.  No more need to run $parse or $eval.  Yay!</p>
-
-<hr style="margin-bottom:20px;">
-
-
-<p><strong>&mdash;Author Injection&mdash;</strong> It looks like <code>bind</code> has also been changed in some recent Angular2 changes. It&rsquo;s new name is <code>properties</code> and has changed from an object to a list.  Again, expect an update in the future to fix the code samples once the changes are published to the alpha releases.</p>
-
-<hr style="margin-bottom:30px;">
-
-
-<p>In our TimeZone directive, let&rsquo;s add the <code>bind</code> property.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Decorator</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">PropertySetter</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/src/core/annotations/di&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">Decorator</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-tz-id]&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">bind</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;id&quot;</span> <span class="o">:</span> <span class="s2">&quot;data-tz-id&quot;</span> <span class="p">},</span>
-</span><span class='line'>    <span class="nx">events</span><span class="o">:</span> <span class="p">{</span> <span class="nx">click</span><span class="o">:</span> <span class="s1">&#39;onTimeZoneClick()&#39;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZone</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;TimeZone constructed&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">onTimeZoneClick</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;time zone &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s2">&quot; was clicked!&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">active</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<div style="text-align:center; margin-bottom:20px;">
-    <img src="/images/timezone/timezoneoutput_clickwithid.jpg" style="max-height: 250px">
-</div>
-
-
-<p>And just like that, we have an <code>id</code> property in our TimeZone directive that stores our time zone id.  But we also want to show the visual state to our users. Ideally, when a time zone is selected, it would be highlighted on our map.  The easiest way would be to add a class based on the state of the component.  But again, since we can&rsquo;t modify the SVG template, we can&rsquo;t add a class directive to do it for us.  So how can we add a class to the host element?  Are we back to injecting the NgElement into the component?</p>
-
-<p>Fortunately, no.  The answer comes by means of a <code>PropertySetter</code>.  A <code>PropertySetter</code> is an object that can be injected into our directive instance and allows us to modify a property of the DOM element to which the component is bound.  In the case of modifying classes, if we prefix our property name with &ldquo;class.&rdquo;, we have a neat shortcut that will add/remove the class whenever the property is set to true or false.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Decorator</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">PropertySetter</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/src/core/annotations/di&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">Decorator</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;[data-tz-id]&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">bind</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;id&quot;</span> <span class="o">:</span> <span class="s2">&quot;data-tz-id&quot;</span> <span class="p">},</span>
-</span><span class='line'>    <span class="nx">events</span><span class="o">:</span> <span class="p">{</span> <span class="nx">click</span><span class="o">:</span> <span class="s1">&#39;onTimeZoneClick()&#39;</span> <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZone</span><span class="p">{</span>
-</span><span class='line'>    <span class="nx">constructor</span><span class="p">(</span><span class="err">@</span><span class="nx">PropertySetter</span><span class="p">(</span><span class="s1">&#39;class.active&#39;</span><span class="p">)</span> <span class="nx">setClassProperty</span><span class="o">:</span><span class="nb">Function</span><span class="p">){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;TimeZone constructed&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">setClassProperty</span> <span class="o">=</span> <span class="nx">setClassProperty</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">onTimeZoneClick</span><span class="p">(){</span>
-</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;time zone &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s2">&quot; was clicked!&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">active</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">active</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">set</span> <span class="nx">active</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
-</span><span class='line'>        <span class="k">if</span><span class="p">(</span><span class="nx">value</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">_active</span><span class="p">){</span>
-</span><span class='line'>            <span class="k">this</span><span class="p">.</span><span class="nx">setClassProperty</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">this</span><span class="p">.</span><span class="nx">_active</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">get</span> <span class="nx">active</span><span class="p">(){</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_active</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<hr style="margin-bottom:20px;">
-
-
-<p><strong>&mdash;Author Injection&mdash;</strong> And&hellip; <code>PropertySetter</code> syntax has been changed as well.  I&rsquo;ll update the code soon.</p>
-
-<hr style="margin-bottom:30px;">
-
-
-<p>With the <code>PropertySetter</code> now configured, we should be able to see the <code>active</code> class get toggled on our SVG timezone path whenever we click on a timezone.</p>
-
-<div style="text-align:center; margin-bottom:20px;">
-    <img src="/images/timezone/active_class_added.jpg" style="max-height: 250px">
-</div>
-
-
-<p>Okay, that seems to be working.  But we still can&rsquo;t visually see the state change.  We need to assign some visual significance to the <code>active</code> class.  This is probably a good time to take a step back and do some quick initial styling of our component.</p>
-
-<h3>Some Quick Styling</h3>
-
-<p>Let&rsquo;s take a quick break from all of this new Angular2, and put in some quick CSS so that we can see when a timezone is selected.  We already have a small style block In <code>index.html</code> that we used to set our timezone fill to transparent.  We&rsquo;ll tweak it to include a few more styles.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;style </span><span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">path</span><span class="p">{</span>
-</span><span class='line'>    <span class="n">stroke</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">path</span><span class="o">[</span><span class="nt">data-tz-id</span><span class="o">]</span><span class="p">{</span>
-</span><span class='line'>    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">200</span><span class="n">ms</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-</span><span class='line'>    <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">200</span><span class="n">ms</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">200</span><span class="n">ms</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">pointer</span><span class="o">-</span><span class="n">events</span><span class="o">:</span> <span class="n">all</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">stroke</span><span class="o">-</span><span class="k">opacity</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">fill</span><span class="o">-</span><span class="k">opacity</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">stroke</span><span class="o">:</span> <span class="m">#99ccee</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">stroke</span><span class="o">-</span><span class="k">width</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">fill</span><span class="o">:</span> <span class="m">#99ccee</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">path</span><span class="o">[</span><span class="nt">data-tz-id</span><span class="o">]</span><span class="nc">.active</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">stroke</span><span class="o">-</span><span class="k">opacity</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">fill</span><span class="o">-</span><span class="k">opacity</span><span class="o">:</span> <span class="o">.</span><span class="m">25</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nf">#land</span><span class="p">{</span>
-</span><span class='line'>    <span class="n">fill</span><span class="o">:</span> <span class="m">#7D7F81</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="nt">&lt;/style&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<div style="text-align:center; margin-bottom:20px;">
-    <img src="/images/timezone/active_timezone.jpg" style="max-height: 250px">
-</div>
-
-
-<p>Now we&rsquo;re getting somewhere.  We&rsquo;ll come back to tweak these styles one more time later (to jazz it up just a bit), but this should get us enough to test actual user interaction without looking at the DOM every time.</p>
-
-<h3>Wrapping Up</h3>
-
-<p>With all the topics that we&rsquo;ve covered already, now is probably as good a time as any to give our minds a well deserved rest.  Let&rsquo;s do a quick review of what we&rsquo;ve learned:</p>
-
-<ol>
-<li>Angular2 is still evolving, many things are still changing under the covers.</li>
-<li>Our component will consist of three directives, TimeZonePicker, TimeZoneMap, and TimeZone.</li>
-<li>There are three different directive annotations in Angular2, <code>@Decorator</code>, <code>@Component</code>, and <code>@Viewport</code>.  We use <code>@Decorator</code> and <code>@Component</code> for our directives.</li>
-<li>ES6 syntax mixed with TypeScript is different, but neat.</li>
-<li>Using directive annotations, we can get/set element properties and events without getting a direct reference to the DOM element.</li>
-</ol>
-
-
-<h3>Coming Up Next</h3>
-
-<p>In part 3 of our series, we&rsquo;ll get into some of the really fun and interesting improvements of Angular2 over AngularJs (v1.x).  We&rsquo;ll discuss the four different dependency injection types, what they mean, and a few caveats of wiring everything up.  We&rsquo;ll also cover using <code>EventEmitter</code> to broadcast changes to consumers of our component.  Finally, we&rsquo;ll put the finishing touches on our component in order to prepare it for users.  It should be a good read.</p>
-
-<p>Thanks for reading!  Follow on Twitter for updates on subsequent posts!</p>
-
-<p>&mdash;T</p>
 </div>
   
   
