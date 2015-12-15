@@ -11,6 +11,8 @@ categories: [angularjs, promises]
   * Expose promises as return values of service calls instead of forcing callbacks as parameters.  This allows for multiple callbacks. (and much simpler code)
   * Setup callbacks as behaviors instead of global "success" or "failure".  This allows for much easier chaining if necessary
 
+<!--more-->
+
 ### The anti-pattern
 
 Asynchronous interactions in AngularJs are built on promises.  A [lot](http://andyshora.com/promises-angularjs-explained-as-cartoon.html) [has](http://markdalgleish.com/2013/06/using-promises-in-angularjs-views/) [been](http://johnmunsch.com/2013/07/17/angularjs-services-and-promises/) [said](https://egghead.io/lessons/angularjs-promises) on the subject of promises already.  So I won't cover their purpose extensively here.  Long story short, use them.

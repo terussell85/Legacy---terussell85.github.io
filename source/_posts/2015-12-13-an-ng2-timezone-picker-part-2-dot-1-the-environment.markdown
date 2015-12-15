@@ -11,6 +11,7 @@ First things first, we are going to get our Angular2 project environment setup. 
 
 The starting point for our our timezone picker is going to be the [angular2-seed](https://github.com/angular/angular2-seed) project found in the official angular repository.  I'm a big fan of reusing what's there.  Plus, this saves us from rewriting a bunch of boilerplate.
 
+<!--more-->
 
 #### Getting the seed setup
 

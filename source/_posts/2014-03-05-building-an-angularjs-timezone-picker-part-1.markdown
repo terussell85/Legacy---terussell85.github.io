@@ -15,6 +15,8 @@ Using Kartograph, we generate a viable map candidate using shape file obtained f
 
 We optimize the map using Kartograph configurations in order to cut down size and add attribution.
 
+<!--more-->
+
 ### Introduction
 
 In this multi-part series, we'll be going through the process of building a timezone picker from scratch.  We'll talk through possible solutions and why we choose one route or the other.

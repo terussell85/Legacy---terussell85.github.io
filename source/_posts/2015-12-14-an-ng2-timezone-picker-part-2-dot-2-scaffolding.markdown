@@ -15,6 +15,8 @@ Our timezone picker will consist of four different components/directives.
 3. TimeZoneMap - the component that renders our SVG map
 4. TimeZone - the directive that maps SVG elements to classes with attributes
 
+<!--more-->
+
 By default, our project structure from the seed project looks like so:
 
 <div style="text-align:center; margin-bottom:20px;">

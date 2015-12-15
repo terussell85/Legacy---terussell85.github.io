@@ -10,6 +10,8 @@ Now that we have our basic project scaffolding in place, it's time for us to get
 
 So let's open up our root component, the TimeZonePicker component (located in the timezonepicker.ts file).  So the first thing to remember is that with Angular2, we are writing TypeScript.  Lucky for us, the basics of TypeScript look pretty similiar to ES6 (or ES2015, or whatever it's called now).  So let's start off by defining a class.
 
+<!--more-->
+
 ``` javascript timezonepicker.ts
 export class TimeZonePicker {}
 ```
