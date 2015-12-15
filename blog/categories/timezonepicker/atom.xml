@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: angular2 | The Blog of Tyler Russell]]></title>
-  <link href="http://terussell85.github.io/blog/categories/angular2/atom.xml" rel="self"/>
+  <title><![CDATA[Category: timezonepicker | The Blog of Tyler Russell]]></title>
+  <link href="http://terussell85.github.io/blog/categories/timezonepicker/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
   <updated>2015-12-14T23:27:44-07:00</updated>
   <id>http://terussell85.github.io/</id>
