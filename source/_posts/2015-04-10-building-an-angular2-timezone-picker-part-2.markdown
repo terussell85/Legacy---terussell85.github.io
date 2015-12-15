@@ -20,4 +20,5 @@ Subparts will be added to this list as they are written.
 
 1. [Setting Up Our Ng2 Environment](/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/)
 2. [Project Scaffolding](/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/)
+2. [The TimeZonePicker Component](/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-3-the-timezonepicker-component/)
 
