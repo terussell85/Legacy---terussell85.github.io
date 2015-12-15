@@ -4,7 +4,7 @@
   <title><![CDATA[Category: kartograph | The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/blog/categories/kartograph/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2015-12-14T23:27:44-07:00</updated>
+  <updated>2015-12-14T23:39:38-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -25,6 +25,9 @@
 <p>Using Kartograph, we generate a viable map candidate using shape file obtained from the <a href="http://efele.net/maps/tz/world/">tz_world database</a> and <a href="http://www.naturalearthdata.com">Natural Earth Data</a>.</p>
 
 <p>We optimize the map using Kartograph configurations in order to cut down size and add attribution.</p>
+
+<!--more-->
+
 
 <h3>Introduction</h3>
 

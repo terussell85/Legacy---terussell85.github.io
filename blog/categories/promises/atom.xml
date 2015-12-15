@@ -4,7 +4,7 @@
   <title><![CDATA[Category: promises | The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/blog/categories/promises/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2015-12-14T23:27:44-07:00</updated>
+  <updated>2015-12-14T23:39:38-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -25,6 +25,9 @@
 <li>Expose promises as return values of service calls instead of forcing callbacks as parameters.  This allows for multiple callbacks. (and much simpler code)</li>
 <li>Setup callbacks as behaviors instead of global &ldquo;success&rdquo; or &ldquo;failure&rdquo;.  This allows for much easier chaining if necessary</li>
 </ul>
+
+
+<!--more-->
 
 
 <h3>The anti-pattern</h3>

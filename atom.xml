@@ -4,7 +4,7 @@
   <title><![CDATA[The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2015-12-14T23:27:44-07:00</updated>
+  <updated>2015-12-14T23:39:38-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -21,6 +21,11 @@
     <content type="html"><![CDATA[<p>Now that we have our basic project scaffolding in place, it&rsquo;s time for us to get started writing our components.</p>
 
 <p>So let&rsquo;s open up our root component, the TimeZonePicker component (located in the timezonepicker.ts file).  So the first thing to remember is that with Angular2, we are writing TypeScript.  Lucky for us, the basics of TypeScript look pretty similiar to ES6 (or ES2015, or whatever it&rsquo;s called now).  So let&rsquo;s start off by defining a class.</p>
+
+<!--more-->
+
+
+
 
 <figure class='code'><figcaption><span>timezonepicker.ts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZonePicker</span> <span class="p">{}</span>
@@ -155,6 +160,9 @@ As far as I can tell Typescript technically implements the ES7 decorator spec, s
 </ol>
 
 
+<!--more-->
+
+
 <p>By default, our project structure from the seed project looks like so:</p>
 
 <div style="text-align:center; margin-bottom:20px;">
@@ -217,6 +225,9 @@ As far as I can tell Typescript technically implements the ES7 decorator spec, s
     <content type="html"><![CDATA[<p>First things first, we are going to get our Angular2 project environment setup.  Feel free to use your favorite IDE or text editor for this series.  I&rsquo;ll be using Webstorm because I&rsquo;m a fake developer that doesn&rsquo;t understand VIM key bindings.</p>
 
 <p>The starting point for our our timezone picker is going to be the <a href="https://github.com/angular/angular2-seed">angular2-seed</a> project found in the official angular repository.  I&rsquo;m a big fan of reusing what&rsquo;s there.  Plus, this saves us from rewriting a bunch of boilerplate.</p>
+
+<!--more-->
+
 
 <h4>Getting the seed setup</h4>
 
@@ -305,6 +316,9 @@ As far as I can tell Typescript technically implements the ES7 decorator spec, s
 <p>Using Kartograph, we generate a viable map candidate using shape file obtained from the <a href="http://efele.net/maps/tz/world/">tz_world database</a> and <a href="http://www.naturalearthdata.com">Natural Earth Data</a>.</p>
 
 <p>We optimize the map using Kartograph configurations in order to cut down size and add attribution.</p>
+
+<!--more-->
+
 
 <h3>Introduction</h3>
 
@@ -737,6 +751,9 @@ As far as I can tell Typescript technically implements the ES7 decorator spec, s
 <li>Expose promises as return values of service calls instead of forcing callbacks as parameters.  This allows for multiple callbacks. (and much simpler code)</li>
 <li>Setup callbacks as behaviors instead of global &ldquo;success&rdquo; or &ldquo;failure&rdquo;.  This allows for much easier chaining if necessary</li>
 </ul>
+
+
+<!--more-->
 
 
 <h3>The anti-pattern</h3>
