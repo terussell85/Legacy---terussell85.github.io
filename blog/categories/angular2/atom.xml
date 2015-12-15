@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angular2 | The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/blog/categories/angular2/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2015-12-14T14:17:57-07:00</updated>
+  <updated>2015-12-14T23:23:55-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -33,6 +33,7 @@
 <ol>
 <li><a href="/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/">Setting Up Our Ng2 Environment</a></li>
 <li><a href="/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/">Project Scaffolding</a></li>
+<li><a href="/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-3-the-timezonepicker-component/">The TimeZonePicker Component</a></li>
 </ol>
 
 ]]></content>

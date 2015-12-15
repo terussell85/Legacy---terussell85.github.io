@@ -4,7 +4,7 @@
   <title><![CDATA[The Blog of Tyler Russell]]></title>
   <link href="http://terussell85.github.io/atom.xml" rel="self"/>
   <link href="http://terussell85.github.io/"/>
-  <updated>2015-12-14T14:17:57-07:00</updated>
+  <updated>2015-12-14T23:23:55-07:00</updated>
   <id>http://terussell85.github.io/</id>
   <author>
     <name><![CDATA[Tyler Russell]]></name>
@@ -12,6 +12,131 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[An Ng2 Timezone Picker - Part 2.3: The TimeZonePicker Component]]></title>
+    <link href="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-3-the-timezonepicker-component/"/>
+    <updated>2015-12-14T22:11:04-07:00</updated>
+    <id>http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-3-the-timezonepicker-component</id>
+    <content type="html"><![CDATA[<p>Now that we have our basic project scaffolding in place, it&rsquo;s time for us to get started writing our components.</p>
+
+<p>So let&rsquo;s open up our root component, the TimeZonePicker component (located in the timezonepicker.ts file).  So the first thing to remember is that with Angular2, we are writing TypeScript.  Lucky for us, the basics of TypeScript look pretty similiar to ES6 (or ES2015, or whatever it&rsquo;s called now).  So let&rsquo;s start off by defining a class.</p>
+
+<figure class='code'><figcaption><span>timezonepicker.ts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZonePicker</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Boom!  Done!  We&rsquo;ve got our TimeZonePicker class defined and exported.  Webpack refreshes our browser for us and&hellip;  yep we&rsquo;re good.  Alright, now let&rsquo;s make this a component.</p>
+
+<p>First, we&rsquo;ll import the necessary Angular2 dependencies from the angular2 library.  Then, we&rsquo;ll use annotations to mark the class as an Angular2 component.</p>
+
+<p>What are annotations, you ask?  I&rsquo;m glad you brought that up.  I tend to use the term &ldquo;annotations&rdquo; instead of &ldquo;decorators&rdquo; because of my background with other languages (Java specifically).  However, in many other languages, (including JavaScript) &ldquo;decorators&rdquo; is the correct term.  Either way, think of annotations/decorators as a way of specifying metadata about your code that can be used at compile or run time to modify behavior.  If you are interested in learning more, you can read the <a href="https://github.com/wycats/javascript-decorators">ES7 proposal for decorators</a>.</p>
+
+<blockquote><p>Author Note:
+As far as I can tell Typescript technically implements the ES7 decorator spec, so &ldquo;decorator&rdquo; is the right term in the context of JavaScript.  But old habits die hard.  So if you see me reference then as annotations, just smirk and move on.  In reality, there are a couple of <a href="http://blog.thoughtram.io/angular/2015/05/03/the-difference-between-annotations-and-decorators.html">differences between the two</a>, but for our purposes here, we don&rsquo;t really care.</p></blockquote>
+
+<p>So let&rsquo;s add to our code!</p>
+
+<figure class='code'><figcaption><span>timezonepicker.ts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">@</span><span class="nx">Component</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">selector</span><span class="o">:</span> <span class="s2">&quot;timezone-picker&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">template</span> <span class="o">:</span> <span class="err">`</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;picker&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>            <span class="nx">This</span> <span class="nx">is</span> <span class="nx">our</span> <span class="nx">picker</span><span class="o">!</span>
+</span><span class='line'>            <span class="o">&lt;</span><span class="nx">timezone</span><span class="o">-</span><span class="nx">map</span> <span class="p">(</span><span class="nx">change</span><span class="p">)</span><span class="o">=</span><span class="s2">&quot;onChange($event)&quot;</span> <span class="p">[</span><span class="nx">tz</span><span class="o">-</span><span class="nx">id</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;tzId&quot;</span><span class="o">&gt;&lt;</span><span class="err">/timezone-map&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="err">`</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">TimeZonePicker</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Alright, now we getting into the fun stuff.  So let&rsquo;s take a quick look at that code.  A couple of important explanations:</p>
+
+<ol>
+<li>We import the Component decorator on line 1.  As we expand our component definition, we&rsquo;ll import more things from angular2</li>
+<li>Line 3 has our <code>@Component</code> annotation</li>
+<li>Line 4 specifies the selector for our component.  Most CSS2 selectors are supported here (excluding psuedo-selectors)</li>
+<li>Line 5 begins our template definition.  Just like AngularJS, we can define the template inline, or provide a templateUrl.  With TypeScript though, we getting the added benefit of using  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings">ES6 template strings</a>.  A major improvement over concatenated strings!</li>
+<li>Line 8 references our TimeZoneMap component, which doesn&rsquo;t exist yet.  That&rsquo;s fine.  The component just won&rsquo;t evaluate until it does.  Note that anything surrounded with <code>()</code> is considered an &ldquo;output&rdquo; of that component, and anything surrounded with <code>[]</code> is an input.  We&rsquo;ll see this again soon.</li>
+</ol>
+
+
+<p>To test our new component, let&rsquo;s make sure that it is rendered when we run our app.  Open up <code>app.ts</code> and let&rsquo;s modify a few things.</p>
+
+<figure class='code'><figcaption><span>app.ts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="kr">import</span> <span class="p">{</span><span class="nx">TimeZonePicker</span><span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;./timezonepicker/timezonepicker&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">@</span><span class="nx">Component</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">template</span><span class="o">:</span> <span class="err">`</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">Angular2</span><span class="o">!&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">timezone</span><span class="o">-</span><span class="nx">picker</span><span class="o">&gt;&lt;</span><span class="err">/timezone-picker&gt;</span>
+</span><span class='line'>  <span class="err">`</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">directives</span><span class="o">:</span> <span class="p">[</span><span class="nx">TimeZonePicker</span><span class="p">]</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="kr">export</span> <span class="kr">class</span> <span class="nx">App</span> <span class="p">{}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Alright, let&rsquo;s talk about our changes.</p>
+
+<ol>
+<li>On line 2, we added a second import statement that imports our TimeZonePicker</li>
+<li>On line 8, we modified the template to include an element that matches the TimeZonePicker selector</li>
+<li>On line 10, we added a <code>directives</code> property to our <code>@Component</code> defintion.  Unlike AngularJS, Angular2 will not automatically evaluate all components/directives.  By explicitly listing what directives are used, Angular2 gets a major perf boost, since it doesn&rsquo;t have to check for all of them.</li>
+</ol>
+
+
+<p>And that&rsquo;s it for our code changes to <code>app.ts</code>!</p>
+
+<p>While we have <code>app.ts</code> open though, let&rsquo;s do a fun experiment.  If you are using an IDE with built-in TypeScript/ES2015 support, try deleting line 2 and see what happens.  Here&rsquo;s what happens for me:</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="http://terussell85.github.io/images/timezone2-3/autocomplete.png">
+</div>
+
+
+<p>Wait.. is that&hellip; autocompletion of imports?!?  Having written ES5 for so long, I forgot what helpful front end autocomplete was.  Yes, I realize autocomplete exists for ES5.  And no, it&rsquo;s not normally very helpful.  Coding in TypeScript/ES2015, however, feels great.  Okay, end of tangent.</p>
+
+<p>Let&rsquo;s fire up our app and see if everything worked.</p>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <img src="http://terussell85.github.io/images/timezone2-3/result.png">
+</div>
+
+
+<p>And that looks pretty good!  We see our &ldquo;This is our picker!&rdquo; text, and the DOM shows that our template has been rendered correctly.  We&rsquo;ve built the first component of our picker!  Success!</p>
+
+<p>In our next post, we&rsquo;ll give the TimeZoneMap component and TimeZone directive the same treatment as our TimeZonePicker.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[An Ng2 Timezone Picker - Part 2.2: Scaffolding]]></title>
@@ -162,6 +287,7 @@
 <ol>
 <li><a href="http://terussell85.github.io/blog/2015/12/13/an-ng2-timezone-picker-part-2-dot-1-the-environment/">Setting Up Our Ng2 Environment</a></li>
 <li><a href="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-2-scaffolding/">Project Scaffolding</a></li>
+<li><a href="http://terussell85.github.io/blog/2015/12/14/an-ng2-timezone-picker-part-2-dot-3-the-timezonepicker-component/">The TimeZonePicker Component</a></li>
 </ol>
 
 ]]></content>
