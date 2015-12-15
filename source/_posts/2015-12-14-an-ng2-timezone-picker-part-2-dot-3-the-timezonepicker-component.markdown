@@ -3,7 +3,7 @@ layout: post
 title: "An Ng2 Timezone Picker - Part 2.3: The TimeZonePicker Component"
 date: 2015-12-14 22:11:04 -0700
 comments: true
-categories: 
+categories: [angular2, timezonepicker]
 ---
 
 Now that we have our basic project scaffolding in place, it's time for us to get started writing our components.

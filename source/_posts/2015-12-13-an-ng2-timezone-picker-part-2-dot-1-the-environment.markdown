@@ -3,7 +3,7 @@ layout: post
 title: "An Ng2 Timezone Picker - Part 2.1: The Environment"
 date: 2015-12-13 23:25:18 -0700
 comments: true
-categories: 
+categories: [angular2, timezonepicker]
 ---
 
 

@@ -3,7 +3,7 @@ layout: post
 title: "An Angular2 Timezone Picker - Part 2: Exploring the World (of ng2)"
 date: 2015-04-21 23:22:28 -0600
 comments: true
-categories: [javascript,angular2]
+categories: [javascript,angular2,timezonepicker]
 ---
 
 

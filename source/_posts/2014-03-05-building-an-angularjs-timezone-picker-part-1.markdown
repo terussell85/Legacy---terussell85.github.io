@@ -4,7 +4,7 @@ title: "An Angular2 Timezone Picker - Part 1: Becoming a Kartograph-er"
 subtitle: ""
 date: 2015-04-01 20:09:07 -0700
 comments: true
-categories: [angular2, kartograph]
+categories: [angular2, kartograph, timezonepicker]
 ---
 
 ### TLDR

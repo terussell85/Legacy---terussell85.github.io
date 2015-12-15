@@ -3,7 +3,7 @@ layout: post
 title: "An Ng2 Timezone Picker - Part 2.2: Scaffolding"
 date: 2015-12-14 13:02:12 -0700
 comments: true
-categories: 
+categories: [angular2, timezonepicker]
 ---
 
 In this post, we'll get the scaffolding of our project setup.
